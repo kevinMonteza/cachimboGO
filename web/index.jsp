@@ -4,6 +4,8 @@
     Author     : kmont
 --%>
 
+<%@page import="to.AsignaturaTO"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!--
@@ -18,24 +20,26 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="JQuery/jquery-3.1.1.js"></script>
-        
+        <%List<AsignaturaTO> lista =(List<AsignaturaTO>) request.getAttribute("lista");%>
         <script type="text/javascript">
 
-            $(document).ready(function () {
+            
+    
+            /*$(document).ready(function () {
 
-                $.post('Controller', {
-			instruccion:"asignaturas"
-			}, function(response) {
-				for (var value in response) {
-                                var boton = document.createElement("button");
-                                boton.id = value.id_asignatura;
-                                boton.className = "w3-bar-item w3-button";
-                                boton.innerHTML = value.nombre;
-                                asigaturas.appendChild(boton);
-                            }
-			});
-                            
-                        });
+                $.get('Controller', {
+                    instruccion: "asignaturas"
+                });
+                function (response) {
+                    for (var value in response) {
+                        var boton = document.createElement("button");
+                        boton.id = value.id_asignatura;
+                        boton.className = "w3-bar-item w3-button";
+                        boton.innerHTML = value.nombre;
+                        asigaturas.appendChild(boton);
+                    }
+                }
+            });*/
         </script>
 
     </head>
@@ -59,8 +63,11 @@ and open the template in the editor.
             <button class="w3-bar-item w3-button w3-border-right">Ayuda</button>
             <div class="w3-dropdown-hover">
                 <button id="courses" type="button" class="w3-button w3-border-right" >Asignaturas</button>
-                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="asignaturas"> 
-                </div> 
+                    <div class="w3-dropdown-content w3-bar-block w3-card-4" id="asignaturas">
+                        <%for(AsignaturaTO a: lista){%>
+                       
+                        <%}%>
+                    </div> 
             </div>
             <div style="float: right;">
                 <input type="text" class="w3-bar-item w3-input" placeholder="Search..">

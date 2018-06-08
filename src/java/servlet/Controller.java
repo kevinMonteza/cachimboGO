@@ -111,7 +111,7 @@ public class Controller extends HttpServlet {
              * Aca obtenemos las asiganturas desde los daos
              */
             List<AsignaturaTO> lista = DAOFactory.getInstance().getAsignaturaDAO().getAsignaturas();
-            System.out.println("entro !!!!");
+            System.out.println("entro !!!!"+lista);
             request.setAttribute("lista", lista);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
             dispatcher.forward(request, response);

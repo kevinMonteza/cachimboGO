@@ -34,6 +34,7 @@ public class MysqlConnection {
     public static Connection getConexion() {
 
         if (_connection == null) {
+            System.out.println("entro al if");
             new MysqlConnection();
         }
         return _connection;
