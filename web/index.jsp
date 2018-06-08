@@ -18,26 +18,24 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="JQuery/jquery-3.1.1.js"></script>
+        
         <script type="text/javascript">
 
             $(document).ready(function () {
 
-            $.get({"Controller",
-                 {
-                instruccion = "asignaturas"
-                   },
-                    function (response) {
-                   // console.log(response);
-                    for (var value in response) {
-                    var boton = document.createElement("button");
-                    boton.id = value.id_asignatura;
-                    boton.className = "w3-bar-item w3-button";
-                    boton.innerHTML = value.nombre;
-                    asigaturas.appendChild(boton);
-                    }
-                    }
-            });
-            });
+                $.post('Controller', {
+			instruccion:"asignaturas"
+			}, function(response) {
+				for (var value in response) {
+                                var boton = document.createElement("button");
+                                boton.id = value.id_asignatura;
+                                boton.className = "w3-bar-item w3-button";
+                                boton.innerHTML = value.nombre;
+                                asigaturas.appendChild(boton);
+                            }
+			});
+                            
+                        });
         </script>
 
     </head>
