@@ -9,9 +9,14 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -23,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  * las diferenctes vistas .jsp
  *
  */
-public class Dispacher {
+public class Dispacher implements Servlet{
 
     RequestDispatcher dispatcher;
 
@@ -39,20 +44,45 @@ public class Dispacher {
     }
 
     void isUser(HttpServletRequest request, HttpServletResponse response) {
-        String user = request.getParameter("user");
-        String password = request.getParameter("password");
-        String path="";
-        if (true) {
-            path="/index.jsp";
-        } else {
-            path="error.jsp";
+        String uname = request.getParameter("uname");
+        String upass = request.getParameter("upass");
+
+        if (uname.equals("f") && upass.equals("f")) {
+            HttpSession session = request.getSession();
+            session.setAttribute("uname", uname);
+            session.setAttribute("uname", upass);
+            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+            try {
+                rd.forward(request, response);
+            } catch (ServletException | IOException ex) {
+                Logger.getLogger(Dispacher.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        try {
-            dispatcher = request.getRequestDispatcher(path);
-            dispatcher.forward(request, response);
-        } catch (ServletException | IOException ex) {
-            Logger.getLogger(Dispacher.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ServletConfig getServletConfig() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getServletInfo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void destroy() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

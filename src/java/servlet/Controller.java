@@ -18,7 +18,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import to.AsignaturaTO;
+import to.TemaTO;
 
 /**
  *
@@ -28,8 +30,6 @@ import to.AsignaturaTO;
  */
 @WebServlet(name = "Controller", urlPatterns = {"/Controller"})
 public class Controller extends HttpServlet {
-
-    Dispacher dispacher = new Dispacher();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,7 +49,7 @@ public class Controller extends HttpServlet {
                 getAsignaturas(request, response);
                 break;
             case "login":
-                dispacher.isUser(request, response);
+                isUser(request, response);
                 break;
             case "temas":
                 getTemas(request, response);
@@ -111,12 +111,12 @@ public class Controller extends HttpServlet {
              * Aca obtenemos las asiganturas desde los daos
              */
             List<AsignaturaTO> lista = DAOFactory.getInstance().getAsignaturaDAO().getAsignaturas();
-            System.out.println("entro !!!!"+lista);
-            request.setAttribute("lista", lista);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
-            dispatcher.forward(request, response);
-
-        } catch (ServletException | IOException | SQLException ex) {
+            PrintWriter out = response.getWriter();
+            System.out.println("entro !!!!" + lista);
+            lista.forEach((a) -> {
+                out.println("<button class='w3-bar-item w3-button' onclick='openCourse("+a.getIdAsignatura()+")'>"+a.getNombre()+"</button>");
+            });
+        } catch (IOException | SQLException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -126,6 +126,19 @@ public class Controller extends HttpServlet {
          * aca se obtiene los temas por asignatura desdelos daos recibe como
          * parametro un id =>request.getParametrer("id")
          */
+        int id=Integer.parseInt(request.getParameter("id"));
+        System.out.println(id);
+        try {
+            List<TemaTO> lista = DAOFactory.getInstance().getTemaDAO().getTemasByAsignatura(id);
+            PrintWriter out = response.getWriter();
+            lista.forEach((a) -> {
+                out.println(a.getNombre());
+                out.println(a.getIdTema());
+                out.println(a.getIdAsignatura().getIdAsignatura());
+            });
+        } catch (SQLException | IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void getSubtemas(HttpServletRequest request, HttpServletResponse response) {
@@ -133,6 +146,7 @@ public class Controller extends HttpServlet {
          * aca obtenemos los subtemas por tema desde los daos recibe como
          * parametro un id =>request.getParametrer("id")
          */
+        
     }
 
     private void getPreguntas(HttpServletRequest request, HttpServletResponse response) {
@@ -140,6 +154,25 @@ public class Controller extends HttpServlet {
          * obtiene las preguntas por subtema recibe un id
          * =>request;getParametrer("id")
          */
+    }
+
+    private void isUser(HttpServletRequest request, HttpServletResponse response) {
+        String uname = request.getParameter("uname");
+        String upass = request.getParameter("upass");
+
+        if (uname.equals("f") && upass.equals("f")) {
+            HttpSession session = request.getSession();
+            try {
+                
+                session.setAttribute("uname", uname);
+                session.setAttribute("upass", upass);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+                dispatcher.forward(request, response);
+            } catch (ServletException | IOException ex) {
+                System.out.println("Error en el login"+ex.getMessage());
+            }
+        }
+
     }
 
 }

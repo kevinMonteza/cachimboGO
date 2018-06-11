@@ -102,7 +102,7 @@ public class TemaDAO implements ITemaDAO{
     public List<TemaTO> getTemasByAsignatura(Integer id_asignatura) {
         temas = new ArrayList<>();
         try {
-            String sql = "select id_tema, nombre from asignatura where id_asignatura = ?;";
+            String sql = "select * from asignatura where id_asignatura = ?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, id_asignatura);
             ResultSet rs = st.executeQuery();
@@ -119,6 +119,7 @@ public class TemaDAO implements ITemaDAO{
             return temas;
         } catch (SQLException ex) {
             Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
             return null;
         }
         finally{

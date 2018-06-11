@@ -6,11 +6,210 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>PD Proyecto</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     </head>
-    <body>
-        <div>TODO write content</div>
+
+    <!-- 
+    Usado:
+    Tabs : https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_tabulators
+    Nav Bar & Dropdown : https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_navbar_dropdown
+    Border : https://www.w3schools.com/w3css/tryit.asp?filename=tryw3css_navbar_border
+    Add Buttons : https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_document_createelement2
+    Clicked Button : https://stackoverflow.com/questions/10291017/how-to-get-id-of-button-user-just-clicked
+    -->
+
+    <body>        
+        <div class="w3-container">
+            <h2>Patrones de Diseño</h2>
+            <p id="algo">Algo </p>
+            <button><a href="http://sigafisi.herokuapp.com">Enviar</a></button>
+            <button><a href="https://developer.mozilla.org">MDN</a></button>
+        </div>
+        <div id="headerBar" class="w3-bar w3-grey w3-card-4">
+            <button class="w3-bar-item w3-button w3-border-right" onclick="openStart('Inicio')">Inicio</button>
+            <button class="w3-bar-item w3-button w3-border-right">Ayuda</button>
+            <div class="w3-dropdown-hover">
+                <button id="courses" type="button" class="w3-button w3-border-right" onclick="openCourses()">Asignaturas</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <button class="w3-bar-item w3-button" onclick="openCourse('Matematicas')">Matematicas</button>
+                    <button class="w3-bar-item w3-button" onclick="openCourse('Comunicacion')">Comunicacion</button>
+                    <button class="w3-bar-item w3-button" onclick="openCourse('CTA')">CTA</button>
+                </div> 
+            </div>
+            <div style="float: right;">
+                <input type="text" class="w3-bar-item w3-input" placeholder="Search..">
+                <a href="#" class="w3-bar-item w3-button w3-grey w3-border-right">Go</a>
+            </div> 
+        </div>
+
+        <div id="Inicio" class="w3-container inicio" style="display:none">
+            <h2>Bienvenidos</h2>
+            <p>---</p>
+        </div>
+
+        <div id="Matematicas" class="w3-container courseDescription" style="display:none">
+            <h2>Matematicas</h2>
+            <p>---</p>
+        </div>
+
+        <div id="Comunicacion" class="w3-container courseDescription" style="display:none">
+            <h2>Comunicacion</h2>
+            <p>---</p>
+        </div>
+
+        <div id="CTA" class="w3-container courseDescription" style="display:none">
+            <h2>Ciencia, Tecnologia y Ambiente</h2>
+            <p>---</p>
+        </div>
+
+        <div id="detallesMatematicas" class="w3-container themeDescription" style="display:none">
+            <h2>Detalles Matematicas</h2>
+            <p>---</p>
+        </div>
+        <div id="detallesComunicacion" class="w3-container themeDescription" style="display:none">
+            <h2>Detalles Comunicacion</h2>
+            <p>---</p>
+        </div>
+        <div id="detallesCTA" class="w3-container themeDescription" style="display:none">
+            <h2>Detalles CTA</h2>
+            <p>---</p>
+        </div>
+
+        <script>
+            function openStart(start) {
+                var i;
+                var x = document.getElementsByClassName("courseDescription");
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";
+                }
+                document.getElementById(start).style.display = "block";
+            }
+
+            function openCourse(courseName) {
+                document.getElementById('Inicio').style.display = "none";
+                // si le pongo id a los buttons, no se puede desplegar la info particular
+                var i;
+                var x = document.getElementsByClassName("courseDescription");
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "none";
+                }
+                document.getElementById(courseName).style.display = "block";
+                addCourse(courseName);
+            }
+
+            function openCourses() {
+                document.getElementById('Inicio').style.display = "none";
+                var i;
+                var x = document.getElementsByClassName("courseDescription");
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = "block";
+                }
+            }
+
+            function displayCourseDetails() {
+                alert(this.id);
+            }
+
+            function addCourse(courseName) {
+                if (document.getElementById("themeTab")) {
+                    document.getElementById("themeTab").remove();
+                }
+                if (document.getElementById("courseTab")) {
+                    document.getElementById("courseTab").remove();
+                }
+
+                var elementDivCourse = document.createElement("div");
+                elementDivCourse.id = "courseTab"
+                elementDivCourse.className = "w3-dropdown-hover";
+
+                var agregarA = document.getElementById("headerBar");
+                //Append the element in page (in span).  
+                agregarA.appendChild(elementDivCourse);
+
+                var elementButton = document.createElement("button");
+                var texto = document.createTextNode(courseName);
+                elementButton.id = "detalles" + courseName; //como reemplazar esto
+                elementButton.classList.add("w3-button");
+                elementButton.classList.add("w3-border-right");
+                elementButton.appendChild(texto);
+                elementButton.onclick = displayCourseDetails;
+
+                //Assign different attributes to the element. 
+                /*elementButton.onclick = function () { // Note this is a function
+                 alert("blabla");
+                 };*/
+
+                var elementDivDeployThemes = document.createElement("div");
+                elementDivDeployThemes.className = "w3-dropdown-content w3-bar-block w3-card-4";
+
+
+                elementDivCourse.appendChild(elementButton);
+
+                var xBotones, textoAux;
+                for (var i = 0; i < 10; i++) {
+                    xBotones = document.createElement("button");
+                    textoAux = document.createTextNode(courseName + (i + 1));
+                    xBotones.id = "courseTheme" + (i + 1);
+                    xBotones.type = "button";
+                    xBotones.classList.add("w3-bar-item");
+                    xBotones.classList.add("w3-button");
+                    xBotones.onclick = addTheme;
+                    xBotones.appendChild(textoAux);
+                    elementDivDeployThemes.appendChild(xBotones);
+                }
+
+                elementDivCourse.appendChild(elementDivDeployThemes);
+            }
+
+            function addTheme() {
+                if (document.getElementById("themeTab")) {
+                    document.getElementById("themeTab").remove();
+                }
+
+                var elementDivTheme = document.createElement("div");
+                elementDivTheme.id = "themeTab";
+                elementDivTheme.className = "w3-dropdown-hover";
+
+                var agregarA = document.getElementById("headerBar");
+                //Append the element in page (in span).  
+                agregarA.appendChild(elementDivTheme);
+
+                var elementButton = document.createElement("button");
+                var texto = document.createTextNode(document.getElementById(this.id).innerHTML);
+                elementButton.classList.add("w3-button");
+                elementButton.classList.add("w3-border-right");
+                elementButton.appendChild(texto);
+
+                //Assign different attributes to the element. 
+                /*elementButton.onclick = function () { // Note this is a function
+                 alert("blabla");
+                 };*/
+
+                var elementDivDeploySubThemes = document.createElement("div");
+                elementDivDeploySubThemes.className = "w3-dropdown-content w3-bar-block w3-card-4";
+
+
+                elementDivTheme.appendChild(elementButton);
+
+                var xBotones, textoAux;
+                for (var i = 0; i < 10; i++) {
+                    xBotones = document.createElement("button");
+                    textoAux = document.createTextNode(this.id + "." + (i + 1));
+                    xBotones.id = "subThemeName" + (i + 1);
+                    xBotones.classList.add("w3-bar-item");
+                    xBotones.classList.add("w3-button");
+                    //xBotones.onclick = displayQuestions;
+                    xBotones.appendChild(textoAux);
+                    elementDivDeploySubThemes.appendChild(xBotones);
+                }
+
+                elementDivTheme.appendChild(elementDivDeploySubThemes);
+            }
+        </script>
     </body>
+
 </html>

@@ -3,11 +3,19 @@
     Created on : Jun 2, 2018, 10:59:50 PM
     Author     : kmont
 --%>
-
+<%
+        String name = request.getParameter("upass");
+        session = request.getSession(true);
+        System.out.println("Sesion: " +  session.getAttribute("uname"));
+        if (session.getAttribute("uname") == null && name == null) {
+            session.invalidate();
+        }
+%>
 <%@page import="to.AsignaturaTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -20,26 +28,25 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="JQuery/jquery-3.1.1.js"></script>
-        <%List<AsignaturaTO> lista =(List<AsignaturaTO>) request.getAttribute("lista");%>
+        <%List<AsignaturaTO> lista = (List<AsignaturaTO>) request.getAttribute("lista");%>
         <script type="text/javascript">
 
-            
-    
-            /*$(document).ready(function () {
-
+            $(document).ready(function () {
                 $.get('Controller', {
                     instruccion: "asignaturas"
+                },function (response) {
+                   // console.log(response);
+                    $("#asignaturas").append(response);
                 });
-                function (response) {
-                    for (var value in response) {
-                        var boton = document.createElement("button");
-                        boton.id = value.id_asignatura;
-                        boton.className = "w3-bar-item w3-button";
-                        boton.innerHTML = value.nombre;
-                        asigaturas.appendChild(boton);
-                    }
+            });
+             function openCourse(e){
+                $.get('Controller', {
+                    instruccion: "temas",
+                    id:e
+                },function (response) {
+                    console.log(response); // aca recibe los temas de cada curso 
+                });
                 }
-            });*/
         </script>
 
     </head>
@@ -52,22 +59,18 @@ and open the template in the editor.
     Add Buttons : https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_document_createelement2
     Clicked Button : https://stackoverflow.com/questions/10291017/how-to-get-id-of-button-user-just-clicked
     -->
-
-    <body>        
+    <body>  
         <div class="w3-container">
             <h2>Patrones de Diseño</h2>
-            <p id="algo">Algo </p>
+            <p id="algo">welcome</p>
         </div>
         <div id="headerBar" class="w3-bar w3-grey w3-card-4">
-            <button class="w3-bar-item w3-button w3-border-right" onclick="openStart('Inicio')">Inicio</button>
+            <button class="w3-bar-item w3-button w3-border-right">Inicio</button>
             <button class="w3-bar-item w3-button w3-border-right">Ayuda</button>
             <div class="w3-dropdown-hover">
                 <button id="courses" type="button" class="w3-button w3-border-right" >Asignaturas</button>
-                    <div class="w3-dropdown-content w3-bar-block w3-card-4" id="asignaturas">
-                        <%for(AsignaturaTO a: lista){%>
-                       
-                        <%}%>
-                    </div> 
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="asignaturas">
+                </div> 
             </div>
             <div style="float: right;">
                 <input type="text" class="w3-bar-item w3-input" placeholder="Search..">
