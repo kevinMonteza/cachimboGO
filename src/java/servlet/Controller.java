@@ -30,7 +30,7 @@ import to.TemaTO;
  */
 @WebServlet(name = "Controller", urlPatterns = {"/Controller"})
 public class Controller extends HttpServlet {
-
+    Dispacher dispacher;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -112,7 +112,7 @@ public class Controller extends HttpServlet {
              */
             List<AsignaturaTO> lista = DAOFactory.getInstance().getAsignaturaDAO().getAsignaturas();
             PrintWriter out = response.getWriter();
-            System.out.println("entro !!!!" + lista);
+           // System.out.println("entro !!!!" + lista);
             lista.forEach((a) -> {
                 out.println("<button class='w3-bar-item w3-button' onclick='openCourse("+a.getIdAsignatura()+")'>"+a.getNombre()+"</button>");
             });
@@ -130,6 +130,9 @@ public class Controller extends HttpServlet {
         System.out.println(id);
         try {
             List<TemaTO> lista = DAOFactory.getInstance().getTemaDAO().getTemasByAsignatura(id);
+            System.out.println(lista);
+            request.setAttribute("lista",lista);
+            
             PrintWriter out = response.getWriter();
             lista.forEach((a) -> {
                 out.println(a.getNombre());
@@ -157,21 +160,15 @@ public class Controller extends HttpServlet {
     }
 
     private void isUser(HttpServletRequest request, HttpServletResponse response) {
-        String uname = request.getParameter("uname");
-        String upass = request.getParameter("upass");
-
-        if (uname.equals("f") && upass.equals("f")) {
-            HttpSession session = request.getSession();
+        dispacher = new Dispacher();
+        String view = dispacher.isUser(request);
             try {
-                
-                session.setAttribute("uname", uname);
-                session.setAttribute("upass", upass);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+                RequestDispatcher dispatcher = request.getRequestDispatcher(view);
                 dispatcher.forward(request, response);
             } catch (ServletException | IOException ex) {
                 System.out.println("Error en el login"+ex.getMessage());
             }
-        }
+        
 
     }
 

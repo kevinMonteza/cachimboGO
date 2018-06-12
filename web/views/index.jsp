@@ -32,11 +32,13 @@ and open the template in the editor.
         <script type="text/javascript">
 
             $(document).ready(function () {
-                $.get('Controller', {
+                
+            
+            $.get('Controller', {
                     instruccion: "asignaturas"
                 },function (response) {
                    // console.log(response);
-                    $("#asignaturas").append(response);
+                    $("#asignaturasBoton").append(response);
                 });
             });
              function openCourse(e){
@@ -68,8 +70,8 @@ and open the template in the editor.
             <button class="w3-bar-item w3-button w3-border-right">Inicio</button>
             <button class="w3-bar-item w3-button w3-border-right">Ayuda</button>
             <div class="w3-dropdown-hover">
-                <button id="courses" type="button" class="w3-button w3-border-right" >Asignaturas</button>
-                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="asignaturas">
+                <button id="courses" type="button" class="w3-button w3-border-right" id="asignaturas">Asignaturas</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="asignaturasBoton">
                 </div> 
             </div>
             <div style="float: right;">

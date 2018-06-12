@@ -102,7 +102,7 @@ public class TemaDAO implements ITemaDAO{
     public List<TemaTO> getTemasByAsignatura(Integer id_asignatura) {
         temas = new ArrayList<>();
         try {
-            String sql = "select * from asignatura where id_asignatura = ?;";
+            String sql = "select * from tema where id_asignatura = ?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, id_asignatura);
             ResultSet rs = st.executeQuery();

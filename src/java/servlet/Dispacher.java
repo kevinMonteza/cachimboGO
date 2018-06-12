@@ -43,22 +43,17 @@ public class Dispacher implements Servlet{
         return "";
     }
 
-    void isUser(HttpServletRequest request, HttpServletResponse response) {
+    public String isUser(HttpServletRequest request) {
         String uname = request.getParameter("uname");
         String upass = request.getParameter("upass");
-
+        String view ="/views/index.jsp";
+        HttpSession session=null;
         if (uname.equals("f") && upass.equals("f")) {
-            HttpSession session = request.getSession();
+            session = request.getSession();
             session.setAttribute("uname", uname);
             session.setAttribute("uname", upass);
-            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-            try {
-                rd.forward(request, response);
-            } catch (ServletException | IOException ex) {
-                Logger.getLogger(Dispacher.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
-
+        return view;
     }
 
     @Override
