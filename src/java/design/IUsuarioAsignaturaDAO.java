@@ -5,10 +5,16 @@
  */
 package design;
 
+import java.util.List;
+import to.UsuarioAsignaturaTO;
+import to.UsuarioTO;
+
 /**
  *
  * @author isaac
  */
 public interface IUsuarioAsignaturaDAO {
-    
+    public List<UsuarioAsignaturaTO> getAsignaturaByUsuario(UsuarioTO usuario);
+    public boolean insertUsuarioAsignatura(UsuarioAsignaturaTO usuarioAsignatura);
+    public boolean updateUsuarioAsignatura(UsuarioAsignaturaTO usuarioAsignatura);
 }

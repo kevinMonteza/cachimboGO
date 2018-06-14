@@ -6,11 +6,17 @@
 package component;
 
 import design.IRespuestaDAO;
+import java.sql.Connection;
 
 /**
  *
  * @author isaac
  */
 public class RespuestaDAO implements IRespuestaDAO{
+    private final Connection connection;
+    
+    public RespuestaDAO(Connection connection){
+        this.connection = connection;
+    }
     
 }

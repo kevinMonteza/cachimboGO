@@ -11,7 +11,7 @@ package to;
  */
 public class UsuarioTemaTO {
     private UsuarioTO id_usuario;
-    private TemaTO id_asignatura;
+    private TemaTO id_tema;
     private Double porcentaje;
 
     /**
@@ -31,15 +31,15 @@ public class UsuarioTemaTO {
     /**
      * @return the id_asignatura
      */
-    public TemaTO getIdAsignatura() {
-        return id_asignatura;
+    public TemaTO getIdTema() {
+        return id_tema;
     }
 
     /**
      * @param id_asignatura the id_asignatura to set
      */
-    public void setIdAsignatura(TemaTO id_asignatura) {
-        this.id_asignatura = id_asignatura;
+    public void setIdTema(TemaTO id_tema) {
+        this.id_tema = id_tema;
     }
 
     /**

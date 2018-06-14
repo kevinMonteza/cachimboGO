@@ -6,11 +6,16 @@
 package component;
 
 import design.IUsuarioDAO;
+import java.sql.Connection;
 
 /**
  *
  * @author isaac
  */
 public class UsuarioDAO implements IUsuarioDAO{
+    private final Connection connection;
     
+    public UsuarioDAO(Connection connection){
+        this.connection = connection;
+    }
 }

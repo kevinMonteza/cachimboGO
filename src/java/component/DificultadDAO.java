@@ -6,11 +6,16 @@
 package component;
 
 import design.IDificultadDAO;
+import java.sql.Connection;
 
 /**
  *
  * @author isaac
  */
 public class DificultadDAO implements IDificultadDAO{
+    private final Connection connection;
     
+    public DificultadDAO(Connection connection){
+        this.connection = connection;
+    }
 }

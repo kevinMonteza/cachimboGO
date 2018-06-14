@@ -12,6 +12,7 @@ package to;
 public class AsignaturaTO {
     private Integer id_asignatura;
     private String nombre;
+    private Integer id_tipo_asignatura;
 
     /**
      * @return the id_asignatura
@@ -39,6 +40,20 @@ public class AsignaturaTO {
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    /**
+     * @return the id_tipo_asignatura
+     */
+    public Integer getIdTipoAsignatura() {
+        return id_tipo_asignatura;
+    }
+
+    /**
+     * @param id_tipo_asignatura the id_tipo_asignatura to set
+     */
+    public void setIdTipoAsignatura(Integer id_tipo_asignatura) {
+        this.id_tipo_asignatura = id_tipo_asignatura;
     }
     
 }
