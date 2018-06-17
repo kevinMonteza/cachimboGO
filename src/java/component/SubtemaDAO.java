@@ -51,14 +51,14 @@ public class SubtemaDAO implements ISubtemaDAO{
                 return null;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } finally {
             if (st != null) {
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -91,7 +91,7 @@ public class SubtemaDAO implements ISubtemaDAO{
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -125,7 +125,7 @@ public class SubtemaDAO implements ISubtemaDAO{
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

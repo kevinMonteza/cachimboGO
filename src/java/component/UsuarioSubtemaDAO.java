@@ -43,7 +43,7 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
             st = connection.prepareStatement(sql);
             st.setInt(1, usuario.getIdUsuario());
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 SubtemaTO subtema = new SubtemaTO();
                 UsuarioSubtemaTO usuarioTema = new UsuarioSubtemaTO();
                 usuarioTema.setIdUsuario(usuario);
@@ -56,9 +56,91 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
             rs.close();
             return usuarioSubtemas;
         } catch (SQLException ex) {
-            Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioSubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioSubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean insertUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema) {
+        String sql = "insert into usuario_subtema"
+                + "(id_usuario, "
+                + "id_subtema, "
+                + "completado) "
+                + "values(?, ?, ?);";
+        try {
+            connection.setAutoCommit(false);
+            st = connection.prepareStatement(sql);
+            st.setInt(1, usuarioSubtema.getIdUsuario().getIdUsuario());
+            st.setInt(2, usuarioSubtema.getIdSubtema().getIdSubtema());
+            st.setBoolean(3, usuarioSubtema.getCompletado());
+            st.executeUpdate();
+            connection.commit();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioSubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(UsuarioSubtemaDAO.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            return false;
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioSubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioSubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean updateUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema) {
+        String sql = "update usuario_subtema "
+                + "set completado = ?"
+                + "where id_subtema = ? and id_usuario = ?;";
+        try {
+            connection.setAutoCommit(false);
+            st = connection.prepareStatement(sql);
+            st.setBoolean(1, usuarioSubtema.getCompletado());
+            st.setInt(2, usuarioSubtema.getIdSubtema().getIdSubtema());
+            st.setInt(3, usuarioSubtema.getIdUsuario().getIdUsuario());
+            st.executeUpdate();
+            connection.commit();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            return false;
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if (st != null) {
                 try {
                     st.close();
@@ -68,14 +150,5 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
             }
         }
     }
-
-    @Override
-    public boolean insertUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean updateUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
+

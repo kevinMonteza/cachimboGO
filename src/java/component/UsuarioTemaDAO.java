@@ -112,9 +112,9 @@ public class UsuarioTemaDAO implements IUsuarioTemaDAO{
 
     @Override
     public boolean updateUsuarioTema(UsuarioTemaTO usuarioTema) {
-        String sql = "update usuario_asignatura "
+        String sql = "update usuario_tema "
                 + "set porcentaje = ?"
-                + "where id_asignatura = ? and id_usuario = ?;";
+                + "where id_tema = ? and id_usuario = ?;";
         try {
             connection.setAutoCommit(false);
             st = connection.prepareStatement(sql);

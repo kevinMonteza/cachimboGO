@@ -5,10 +5,16 @@
  */
 package design;
 
+import java.util.List;
+import to.RespuestaTO;
+import to.SubtemaTO;
+
 /**
  *
  * @author isaac
  */
 public interface IRespuestaDAO {
-    
+    public List<RespuestaTO> getRespuestasBySubtema(Integer id_subtema, Integer id_usuario);
+    public boolean insertRespuesta(RespuestaTO respuesta);
+    public boolean updateRespuesta(RespuestaTO respuesta);
 }

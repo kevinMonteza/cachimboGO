@@ -71,7 +71,7 @@ public class UsuarioAsignaturaDAO implements IUsuarioAsignaturaDAO{
 
     @Override
     public boolean insertUsuarioAsignatura(UsuarioAsignaturaTO usuarioAsignatura) {
-        String sql = "insert into usuario_pregunta"
+        String sql = "insert into usuario_asignatura"
                 + "(id_usuario, "
                 + "id_asignatura, "
                 + "porcentaje) "
