@@ -28,7 +28,7 @@ import javax.servlet.http.HttpSession;
  * las diferenctes vistas .jsp
  *
  */
-public class Dispacher implements Servlet{
+public class Dispacher implements Servlet {
 
     RequestDispatcher dispatcher;
 
@@ -46,10 +46,10 @@ public class Dispacher implements Servlet{
     public String isUser(HttpServletRequest request) {
         String uname = request.getParameter("uname");
         String upass = request.getParameter("upass");
-        String view ="/views/index.jsp";
-        HttpSession session=null;
+        String view = "/views/index.jsp";
+        HttpSession session = null;
         if (uname.equals("f") && upass.equals("f")) {
-            session = request.getSession();
+            session = request.getSession(true);
             session.setAttribute("uname", uname);
             session.setAttribute("uname", upass);
         }

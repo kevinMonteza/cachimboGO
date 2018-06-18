@@ -6,11 +6,16 @@
 package component;
 
 import design.IUsuarioSubtemaDAO;
+import java.sql.Connection;
 
 /**
  *
  * @author isaac
  */
 public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO{
+    private Connection connection;
+    public UsuarioSubtemaDAO(Connection connection) {
+        this.connection=connection;
+    }
     
 }

@@ -27,8 +27,8 @@ public class SubtemaDAO implements ISubtemaDAO{
     private PreparedStatement st;
     private List<SubtemaTO> subtemas;
 
-    public SubtemaDAO() throws SQLException {
-        connection = MysqlConnection.getConexion();
+    public SubtemaDAO(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override

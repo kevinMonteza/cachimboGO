@@ -3,11 +3,12 @@
     Created on : Jun 2, 2018, 10:59:50 PM
     Author     : kmont
 --%>
-<%
+
+   <%
         String name = request.getParameter("upass");
         session = request.getSession(true);
         System.out.println("Sesion: " +  session.getAttribute("uname"));
-        if (session.getAttribute("uname") == null && name == null) {
+        if (session.getAttribute("uname") == null && session.getAttribute("upass") == null) {
             session.invalidate();
         }
 %>
@@ -46,10 +47,16 @@ and open the template in the editor.
                     instruccion: "temas",
                     id:e
                 },function (response) {
-                    console.log(response); // aca recibe los temas de cada curso 
+                    console.log("ID : ", e)
+                    console.log(response); // aca recibe los temas de cada curso
+                    if (document.getElementById("courseTab")) {
+                        document.getElementById("courseTab").remove();
+                    }
+                    $("#headerBar").append("<button id='courseTab' class='w3-bar-item w3-button w3-border-right'>Inicio</button>");
                 });
                 }
         </script>
+     
 
     </head>
 

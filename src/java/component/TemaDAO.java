@@ -27,8 +27,8 @@ public class TemaDAO implements ITemaDAO{
     private PreparedStatement st;
     private List<TemaTO> temas;
 
-    public TemaDAO() throws SQLException {
-        connection = MysqlConnection.getConexion();
+    public TemaDAO(Connection connection) throws SQLException {
+        this.connection = connection;
     }
     
     @Override

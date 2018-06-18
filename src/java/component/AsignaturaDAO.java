@@ -23,12 +23,12 @@ import to.AsignaturaTO;
  */
 public class AsignaturaDAO implements IAsignaturaDAO {
 
-    private final Connection connection;
+    private Connection connection;
     private PreparedStatement st;
     private List<AsignaturaTO> asignaturas;
 
-    public AsignaturaDAO() throws SQLException {
-        connection = MysqlConnection.getConexion();
+    public AsignaturaDAO(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override

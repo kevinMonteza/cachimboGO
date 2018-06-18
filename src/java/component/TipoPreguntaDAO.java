@@ -6,11 +6,16 @@
 package component;
 
 import design.ITipoPreguntaDAO;
+import java.sql.Connection;
 
 /**
  *
  * @author isaac
  */
 public class TipoPreguntaDAO implements ITipoPreguntaDAO{
+    private Connection connection;
+    public TipoPreguntaDAO(Connection connection) {
+        this.connection=connection;
+    }
     
 }

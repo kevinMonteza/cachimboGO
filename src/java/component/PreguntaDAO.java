@@ -26,12 +26,12 @@ import to.TipoPreguntaTO;
  */
 public class PreguntaDAO implements IPreguntaDAO {
 
-    private final Connection connection;
+    private Connection connection;
     private PreparedStatement st;
     private List<PreguntaTO> preguntas;
 
-    public PreguntaDAO() throws SQLException {
-        connection = MysqlConnection.getConexion();
+    public PreguntaDAO(Connection connection) throws SQLException {
+        this.connection = connection;
     }
 
     @Override
