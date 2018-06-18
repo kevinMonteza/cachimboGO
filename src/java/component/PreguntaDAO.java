@@ -5,7 +5,6 @@
  */
 package component;
 
-import database.MysqlConnection;
 import design.IPreguntaDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import to.DificultadTO;
@@ -352,44 +352,27 @@ public class PreguntaDAO implements IPreguntaDAO {
     }
 
     @Override
-    public List<PreguntaTO> getPreguntasRandom(Integer id_subtema) {
-        Integer first = 0, last = 0;
+    public List<PreguntaTO> getPreguntasRandom(Integer id_subtema, Integer tipo) {
+        Integer i = 0, cantidad;
         preguntas = new ArrayList<>();
-        try {
-            String sql = "select id_pregunta from pregunta limit 1";
-            st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                first = rs.getInt(1);
-            }
-            rs.close();
-            st.close();
-            sql = "select id_pregunta from pregunta order by id_pregunta desc limit 1";
-            st = connection.prepareStatement(sql);
-            rs = st.executeQuery();
-            if (rs.next()) {
-                last = rs.getInt(1);
-            }
-            rs.close();
-            st.close();
-            for (int i = 0; i < 7; i++) {
-                Integer rand = (int) ((Math.random() * last) + first);
-                PreguntaTO pregunta = this.getPreguntaById(rand);
-                preguntas.add(pregunta);
-            }
-            return preguntas;
-        } catch (SQLException ex) {
-            Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        } finally {
-            if (st != null) {
-                try {
-                    st.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        List<PreguntaTO> preguntasRandom = new ArrayList<>();
+        List<Integer> randoms = new ArrayList<>();
+        if (tipo == 0) {
+            cantidad = 7;
+        } else {
+            cantidad = 10;
+        }
+        while (i < cantidad) {
+            preguntas = this.getPreguntasBySubtema(id_subtema);
+            Random rand = new Random();
+            Integer nrand = rand.nextInt(preguntas.size());
+            if (randoms.isEmpty() || !randoms.contains(nrand)) {
+                randoms.add(nrand);
+                preguntasRandom.add(preguntas.get(nrand));
+                i++;
             }
         }
+        return preguntas;
     }
 
 }

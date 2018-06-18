@@ -11,8 +11,8 @@ package to;
  */
 public class UsuarioSubtemaTO {
     private UsuarioTO id_usuario;
-    private SubtemaTO id_asignatura;
-    private Double porcentaje;
+    private SubtemaTO id_subtema;
+    private Boolean completado;
 
     /**
      * @return the id_usuario
@@ -31,28 +31,28 @@ public class UsuarioSubtemaTO {
     /**
      * @return the id_asignatura
      */
-    public SubtemaTO getIdAsignatura() {
-        return id_asignatura;
+    public SubtemaTO getIdSubtema() {
+        return id_subtema;
     }
 
     /**
      * @param id_asignatura the id_asignatura to set
      */
-    public void setIdAsignatura(SubtemaTO id_asignatura) {
-        this.id_asignatura = id_asignatura;
+    public void setIdSubtema(SubtemaTO id_subtema) {
+        this.id_subtema = id_subtema;
     }
 
     /**
      * @return the porcentaje
      */
-    public Double getPorcentaje() {
-        return porcentaje;
+    public Boolean getCompletado() {
+        return completado;
     }
 
     /**
      * @param porcentaje the porcentaje to set
      */
-    public void setPorcentaje(Double porcentaje) {
-        this.porcentaje = porcentaje;
+    public void setCompletado(Boolean completado) {
+        this.completado = completado;
     }
 }

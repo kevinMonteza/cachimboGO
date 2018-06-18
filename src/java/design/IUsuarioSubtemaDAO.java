@@ -5,10 +5,16 @@
  */
 package design;
 
+import java.util.List;
+import to.UsuarioSubtemaTO;
+import to.UsuarioTO;
+
 /**
  *
  * @author isaac
  */
 public interface IUsuarioSubtemaDAO {
-    
+    public List<UsuarioSubtemaTO> getSubtemaByUsuario(UsuarioTO usuario);
+    public boolean insertUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema);
+    public boolean updateUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema);
 }

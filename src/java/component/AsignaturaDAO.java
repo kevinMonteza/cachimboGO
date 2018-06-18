@@ -5,7 +5,6 @@
  */
 package component;
 
-import database.MysqlConnection;
 import design.IAsignaturaDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,13 +34,14 @@ public class AsignaturaDAO implements IAsignaturaDAO {
     public AsignaturaTO getAsignaturaById(Integer id_asignatura) {
         AsignaturaTO asignatura = new AsignaturaTO();
         try {
-            String sql = "select nombre from asignatura where id_asignatura = ?;";
+            String sql = "select nombre, id_tipo_pregunta from asignatura where id_asignatura = ?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, id_asignatura);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 asignatura.setIdAsignatura(id_asignatura);
                 asignatura.setNombre(rs.getString(1));
+                asignatura.setIdTipoAsignatura(rs.getInt(2));
                 rs.close();
                 return asignatura;
             } else {
@@ -49,14 +49,14 @@ public class AsignaturaDAO implements IAsignaturaDAO {
                 return null;
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AsignaturaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         } finally {
             if (st != null) {
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AsignaturaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -66,13 +66,14 @@ public class AsignaturaDAO implements IAsignaturaDAO {
     public List<AsignaturaTO> getAsignaturas() {
         asignaturas = new ArrayList<>();
         try {
-            String sql = "select id_asignatura, nombre from asignatura;";
+            String sql = "select id_asignatura, nombre, id_tipo_asignatura from asignatura;";
             st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 AsignaturaTO asignatura = new AsignaturaTO();
                 asignatura.setIdAsignatura(rs.getInt(1));
                 asignatura.setNombre(rs.getString(2));
+                asignatura.setIdTipoAsignatura(rs.getInt(3));
                 asignaturas.add(asignatura);
             }
             rs.close();
@@ -85,7 +86,7 @@ public class AsignaturaDAO implements IAsignaturaDAO {
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AsignaturaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

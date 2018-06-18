@@ -5,7 +5,6 @@
  */
 package component;
 
-import database.MysqlConnection;
 import design.ITemaDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,7 +58,7 @@ public class TemaDAO implements ITemaDAO{
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TemaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -84,7 +83,7 @@ public class TemaDAO implements ITemaDAO{
             rs.close();
             return temas;
         } catch (SQLException ex) {
-            Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TemaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
         finally{
@@ -92,7 +91,7 @@ public class TemaDAO implements ITemaDAO{
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TemaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -118,7 +117,7 @@ public class TemaDAO implements ITemaDAO{
             rs.close();
             return temas;
         } catch (SQLException ex) {
-            Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TemaDAO.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex.getMessage());
             return null;
         }
@@ -127,7 +126,7 @@ public class TemaDAO implements ITemaDAO{
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PreguntaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TemaDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

@@ -16,7 +16,9 @@ import java.sql.SQLException;
  * @author isaac
  */
 public class DAOFactory {
+
     private static final DAOFactory daoFac;
+
     private static Connection connection;
     
     static{

@@ -14,10 +14,9 @@ import java.sql.Connection;
  */
 public class DificultadDAO implements IDificultadDAO {
 
-    private Connection connection;
+    private final Connection connection;
 
     public DificultadDAO(Connection connection) {
         this.connection = connection;
     }
-
 }
