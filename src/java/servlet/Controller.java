@@ -111,7 +111,7 @@ public class Controller extends HttpServlet {
              */
             List<AsignaturaTO> lista = DAOFactory.getInstance().getAsignaturaDAO().getAsignaturas();
             PrintWriter out = response.getWriter();
-           // System.out.println("entro !!!!" + lista);
+            System.out.println("esta en el servlet getAsiganturas" + lista);
             lista.forEach((a) -> {
                 out.println("<button class='w3-bar-item w3-button' onclick='openCourse("+a.getIdAsignatura()+")'>"+a.getNombre()+"</button>");
             });
@@ -129,16 +129,17 @@ public class Controller extends HttpServlet {
         System.out.println(id);
         try {
             List<TemaTO> lista = DAOFactory.getInstance().getTemaDAO().getTemasByAsignatura(id);
-            System.out.println(lista);
+            System.out.println("servelt getTemas"+lista);
             request.setAttribute("lista",lista);
-            
-            PrintWriter out = response.getWriter();
-            lista.forEach((a) -> {
+            RequestDispatcher disp= request.getRequestDispatcher("/views/temas.jsp");
+            disp.forward(request, response);
+           // PrintWriter out = response.getWriter();
+           /* lista.forEach((a) -> {
                 out.println(a.getNombre());
                 out.println(a.getIdTema());
                 out.println(a.getIdAsignatura().getIdAsignatura());
-            });
-        } catch (SQLException | IOException ex) {
+            });*/
+        } catch (SQLException | IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -28,6 +28,7 @@ public class MysqlConnection {
             _connection = DriverManager.getConnection("jdbc:mysql://" + host + ":3306/" + name_db, user, password);
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException e) {
             System.out.println("Error Duplicado el objeto _connection" + e.getMessage());
+           
         }
 
     }
@@ -35,7 +36,7 @@ public class MysqlConnection {
     public static Connection getConexion() {
 
         if (_connection == null) {
-            System.out.println("entro al if");
+            System.out.println("entro al if conexion");
             new MysqlConnection();
         } else {
             System.out.println("No entro al if");

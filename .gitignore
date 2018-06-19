@@ -1,6 +1,7 @@
 # NetBeans
 ######################
 build/
+nbproject/private/
 dist/
 nbdist/
 nbactions.xml

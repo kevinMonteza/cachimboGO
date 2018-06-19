@@ -31,6 +31,9 @@ public class DAOFactory {
     }
     
     public IAsignaturaDAO getAsignaturaDAO() throws SQLException{
+        if(connection==null){
+            System.out.println("Conexion nula");
+        }
         return new AsignaturaDAO(connection);
     }
     
