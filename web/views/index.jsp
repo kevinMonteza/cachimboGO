@@ -4,15 +4,6 @@
     Author     : kmont
 --%>
 
-<%
-    String upass = (String) session.getAttribute("upass");
-    String uname = (String) session.getAttribute("uname");
-    System.out.println("Sesion: " + uname);
-    System.out.println("Sesion: " + upass);
-    if (upass == null && uname == null) {
-        session.invalidate();
-    }
-%>
 <%@page import="to.AsignaturaTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,7 +22,6 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <script src="JQuery/jquery-3.1.1.js"></script>
         <script type="text/javascript">
-
             $(document).ready(function () {
                 $.get('Controller', {
                     instruccion: "asignaturas"
@@ -40,24 +30,38 @@ and open the template in the editor.
                     $("#asignaturasBoton").append(response);
                 });
             });
-            function openCourse(e) {
-                var bt = $("#inicio");
-                console.log("ID:", e);
+            function openCourse(idCourse, nameCourse) {
+                var bt = $("#temasBoton");
+                console.log("OpenCourse Parametro : ", nameCourse);
+                document.getElementById("temas").innerHTML = nameCourse;
+                cambiarContenido(nameCourse,"El conteido de este curso......");
                 $.get('Controller', {
                     instruccion: "temas",
-                    id: e
+                    id: idCourse
                 }, function (response) {
-                    console.log(response); // aca recibe los temas de cada curso
+                    //console.log(response); // aca recibe los temas de cada curso                    
                     bt.empty();
                     bt.append(response);
-                    /* if (document.getElementById("courseTab")) {
-                     document.getElementById("courseTab").remove();
-                     }
-                     $("#headerBar").append("<button id='courseTab' class='w3-bar-item w3-button w3-border-right'>Inicio</button>");*/
                 });
             }
+            function openTheme(idTheme, nameTheme) {
+                console.log("OpenTheme Parametro : ", idTheme);
+                document.getElementById("subtemas").innerHTML = nameTheme;
+                var bt = $("#subTemasBoton");
+                $.get('Controller', {
+                    instruccion: "subtemas",
+                    id: idTheme
+                }, function (response) {
+                    console.log(response); // aca recibe los temas de cada curso                    
+                    bt.empty();
+                    bt.append(response);
+                });
+            }
+            function cambiarContenido(titulo,contenido){
+                 $("#titulo").html(titulo);
+                 $("#contenido").html(contenido+titulo);
+            }
         </script>
-
 
     </head>
 
@@ -78,8 +82,18 @@ and open the template in the editor.
             <button class="w3-bar-item w3-button w3-border-right">Inicio</button>
             <button class="w3-bar-item w3-button w3-border-right">Ayuda</button>
             <div class="w3-dropdown-hover">
-                <button id="courses" type="button" class="w3-button w3-border-right" id="asignaturas">Asignaturas</button>
+                <button type="button" class="w3-button w3-border-right" id="asignaturas">Asignaturas</button>
                 <div class="w3-dropdown-content w3-bar-block w3-card-4" id="asignaturasBoton">
+                </div> 
+            </div>
+            <div class="w3-dropdown-hover">
+                <button type="button" class="w3-button w3-border-right" id="temas">Temas</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="temasBoton">
+                </div>
+            </div>
+            <div class="w3-dropdown-hover">
+                <button type="button" class="w3-button w3-border-right" id="subtemas">Subtemas</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="subTemasBoton">
                 </div> 
             </div>
             <div style="float: right;">
@@ -89,8 +103,8 @@ and open the template in the editor.
         </div>
 
         <div id="inicio" class="w3-container inicio">
-            <h2>Bienvenidos</h2>
-            <p>---</p>
+            <h2 id="titulo">Bienvenidos</h2>
+            <p id="contenido">---</p>
         </div>
     </body>
 

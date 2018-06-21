@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import to.AsignaturaTO;
+import to.SubtemaTO;
 import to.TemaTO;
 
 /**
@@ -29,7 +30,9 @@ import to.TemaTO;
  */
 @WebServlet(name = "Controller", urlPatterns = {"/Controller"})
 public class Controller extends HttpServlet {
+
     Dispacher dispacher;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,6 +46,7 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String instruccion = request.getParameter("instruccion");
+        System.out.println(instruccion);
         switch (instruccion) {
             case "asignaturas":
                 getAsignaturas(request, response);
@@ -113,7 +117,7 @@ public class Controller extends HttpServlet {
             PrintWriter out = response.getWriter();
             System.out.println("esta en el servlet getAsiganturas" + lista);
             lista.forEach((a) -> {
-                out.println("<button class='w3-bar-item w3-button' onclick='openCourse("+a.getIdAsignatura()+")'>"+a.getNombre()+"</button>");
+                out.println("<button id='" + a.getNombre() + "' class='w3-bar-item w3-button' onclick='openCourse(" + a.getIdAsignatura() + ", this.id)'>" + a.getNombre() + "</button>");
             });
         } catch (IOException | SQLException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,16 +129,16 @@ public class Controller extends HttpServlet {
          * aca se obtiene los temas por asignatura desdelos daos recibe como
          * parametro un id =>request.getParametrer("id")
          */
-        int id=Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("id"));
         System.out.println(id);
         try {
             List<TemaTO> lista = DAOFactory.getInstance().getTemaDAO().getTemasByAsignatura(id);
-            System.out.println("servelt getTemas"+lista);
-            request.setAttribute("lista",lista);
-            RequestDispatcher disp= request.getRequestDispatcher("/views/temas.jsp");
+            System.out.println("servelt getTemas" + lista);
+            request.setAttribute("lista", lista);
+            RequestDispatcher disp = request.getRequestDispatcher("/views/temas.jsp");
             disp.forward(request, response);
-           // PrintWriter out = response.getWriter();
-           /* lista.forEach((a) -> {
+            // PrintWriter out = response.getWriter();
+            /* lista.forEach((a) -> {
                 out.println(a.getNombre());
                 out.println(a.getIdTema());
                 out.println(a.getIdAsignatura().getIdAsignatura());
@@ -149,6 +153,23 @@ public class Controller extends HttpServlet {
          * aca obtenemos los subtemas por tema desde los daos recibe como
          * parametro un id =>request.getParametrer("id")
          */
+        int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println("IdTema"+id);
+        try {
+            List<SubtemaTO> lista = DAOFactory.getInstance().getSubtemaDAO().getSubtemasByTema(id);
+            System.out.println("servelt getSubTemas" + lista);
+            request.setAttribute("lista", lista);
+            RequestDispatcher disp = request.getRequestDispatcher("/views/subTemas.jsp");
+            disp.forward(request, response);
+            // PrintWriter out = response.getWriter();
+            /* lista.forEach((a) -> {
+                out.println(a.getNombre());
+                out.println(a.getIdTema());
+                out.println(a.getIdAsignatura().getIdAsignatura());
+            });*/
+        } catch (SQLException | IOException | ServletException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
 
@@ -162,13 +183,12 @@ public class Controller extends HttpServlet {
     private void isUser(HttpServletRequest request, HttpServletResponse response) {
         dispacher = new Dispacher();
         String view = dispacher.isUser(request);
-            try {
-                RequestDispatcher dispatcher = request.getRequestDispatcher(view);
-                dispatcher.forward(request, response);
-            } catch (ServletException | IOException ex) {
-                System.out.println("Error en el login"+ex.getMessage());
-            }
-        
+        try {
+            RequestDispatcher dispatcher = request.getRequestDispatcher(view);
+            dispatcher.forward(request, response);
+        } catch (ServletException | IOException ex) {
+            System.out.println("Error en el login" + ex.getMessage());
+        }
 
     }
 
