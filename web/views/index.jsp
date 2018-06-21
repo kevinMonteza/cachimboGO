@@ -24,7 +24,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-         <title>PD Proyecto</title>
+        <title>PD Proyecto</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -32,21 +32,22 @@ and open the template in the editor.
         <script type="text/javascript">
 
             $(document).ready(function () {
-            $.get('Controller', {
+                $.get('Controller', {
                     instruccion: "asignaturas"
-                },function (response) {
-                   // console.log(response);
+                }, function (response) {
+                    // console.log(response);
                     $("#asignaturasBoton").append(response);
                 });
             });
-            function openCourse(e) {
-                var bt=$("#inicio");
-                console.log("ID:",e);
+            function openCourse(idCourse, nameCourse) {
+                var bt = $("#temasBoton");
+                console.log("OpenCourse Parametro : ", nameCourse);
+                document.getElementById("temas").innerHTML = nameCourse;
                 $.get('Controller', {
                     instruccion: "temas",
-                    id: e
+                    id: idCourse
                 }, function (response) {
-                    console.log(response); // aca recibe los temas de cada curso
+                    //console.log(response); // aca recibe los temas de cada curso                    
                     bt.empty();
                     bt.append(response);
                     /* if (document.getElementById("courseTab")) {
@@ -54,6 +55,10 @@ and open the template in the editor.
                      }
                      $("#headerBar").append("<button id='courseTab' class='w3-bar-item w3-button w3-border-right'>Inicio</button>");*/
                 });
+            }
+            function openTheme(idTheme, nameTheme) {
+                console.log("OpenTheme Parametro : ", nameTheme);
+                document.getElementById("subtemas").innerHTML = nameTheme;
             }
         </script>
 
@@ -77,8 +82,18 @@ and open the template in the editor.
             <button class="w3-bar-item w3-button w3-border-right">Inicio</button>
             <button class="w3-bar-item w3-button w3-border-right">Ayuda</button>
             <div class="w3-dropdown-hover">
-                <button id="courses" type="button" class="w3-button w3-border-right" id="asignaturas">Asignaturas</button>
+                <button type="button" class="w3-button w3-border-right" id="asignaturas">Asignaturas</button>
                 <div class="w3-dropdown-content w3-bar-block w3-card-4" id="asignaturasBoton">
+                </div> 
+            </div>
+            <div class="w3-dropdown-hover">
+                <button type="button" class="w3-button w3-border-right" id="temas">Temas</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="temasBoton">
+                </div>
+            </div>
+            <div class="w3-dropdown-hover">
+                <button type="button" class="w3-button w3-border-right" id="subtemas">Subtemas</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="subTemasBoton">
                 </div> 
             </div>
             <div style="float: right;">

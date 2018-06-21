@@ -10,8 +10,8 @@
 <%
     List<TemaTO> lista = (List<TemaTO>) request.getAttribute("lista");
 %>
-<div class="w3-display-middle">
+<div class="">
     <%for (TemaTO tema : lista) {%>
-    <button class="w3-button w3-black w3-round-large"><%= tema.getNombre()%></button>
+    <button id="<%= tema.getNombre()%>" class="w3-bar-item w3-button" onclick='openTheme("<%= tema.getNombre()%>", this.id)'><%= tema.getNombre()%></button>    
     <%}%>
 </div>
