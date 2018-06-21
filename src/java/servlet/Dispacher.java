@@ -56,10 +56,9 @@ public class Dispacher implements Servlet {
             session = request.getSession(true);
             session.setAttribute("uname", uname);
             session.setAttribute("upass", upass);
-            
+             return view;
         }
-        session = request.getSession(false);
-        return view;
+        return viewFalse;
         
     }
 
