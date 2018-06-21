@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import dao.DAOFactory;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
@@ -14,6 +15,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import to.UsuarioTO;
 
 /**
  *
@@ -44,13 +46,21 @@ public class Dispacher implements Servlet {
         String uname = request.getParameter("uname");
         String upass = request.getParameter("upass");
         String view = "/views/index.jsp";
+        String viewFalse="/views/fallo.jsp";
+        UsuarioTO usuario= new UsuarioTO();
+        usuario.setUsuario(upass);
+        usuario.setPassword(upass);
+        
         HttpSession session = null;
-        if (uname.equals("f") && upass.equals("f")) {
+        if (DAOFactory.getInstance().getUsuarioDAO().usuarioAuth(usuario)) {
             session = request.getSession(true);
             session.setAttribute("uname", uname);
-            session.setAttribute("uname", upass);
+            session.setAttribute("upass", upass);
+            
         }
+        session = request.getSession(false);
         return view;
+        
     }
 
     @Override

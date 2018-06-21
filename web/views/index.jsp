@@ -5,10 +5,11 @@
 --%>
 
 <%
-    String name = request.getParameter("upass");
-    session = request.getSession(true);
-    System.out.println("Sesion: " + session.getAttribute("uname"));
-    if (session.getAttribute("uname") == null && session.getAttribute("upass") == null) {
+    String upass = (String) session.getAttribute("upass");
+    String uname = (String) session.getAttribute("uname");
+    System.out.println("Sesion: " + uname);
+    System.out.println("Sesion: " + upass);
+    if (upass == null && uname == null) {
         session.invalidate();
     }
 %>
@@ -24,7 +25,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-         <title>PD Proyecto</title>
+        <title>PD Proyecto</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -32,16 +33,16 @@ and open the template in the editor.
         <script type="text/javascript">
 
             $(document).ready(function () {
-            $.get('Controller', {
+                $.get('Controller', {
                     instruccion: "asignaturas"
-                },function (response) {
-                   // console.log(response);
+                }, function (response) {
+                    // console.log(response);
                     $("#asignaturasBoton").append(response);
                 });
             });
             function openCourse(e) {
-                var bt=$("#inicio");
-                console.log("ID:",e);
+                var bt = $("#inicio");
+                console.log("ID:", e);
                 $.get('Controller', {
                     instruccion: "temas",
                     id: e
