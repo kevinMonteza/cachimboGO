@@ -20,7 +20,18 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
         <script src="JQuery/jquery-3.1.1.js"></script>
+
+        <!-- Popper JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script> 
+        
         <script type="text/javascript">
             $(document).ready(function () {
                 $.get('Controller', {
@@ -34,7 +45,7 @@ and open the template in the editor.
                 var bt = $("#temasBoton");
                 console.log("OpenCourse Parametro : ", nameCourse);
                 document.getElementById("temas").innerHTML = nameCourse;
-                cambiarContenido(nameCourse,"El conteido de este curso......");
+                cambiarContenido(nameCourse, "El conteido de este curso......");
                 $.get('Controller', {
                     instruccion: "temas",
                     id: idCourse
@@ -57,9 +68,9 @@ and open the template in the editor.
                     bt.append(response);
                 });
             }
-            function cambiarContenido(titulo,contenido){
-                 $("#titulo").html(titulo);
-                 $("#contenido").html(contenido+titulo);
+            function cambiarContenido(titulo, contenido) {
+                $("#titulo").html(titulo);
+                $("#contenido").html(contenido + titulo);
             }
         </script>
 
@@ -103,6 +114,9 @@ and open the template in the editor.
         </div>
 
         <div id="inicio" class="w3-container inicio">
+            <div>
+                <button id="tienda" class="btn btn-light"><spam>Tienda</spam></button>
+            </div>
             <h2 id="titulo">Bienvenidos</h2>
             <p id="contenido">---</p>
         </div>
