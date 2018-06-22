@@ -18,7 +18,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import to.ArticuloTO;
 import to.AsignaturaTO;
+import to.PreguntaTO;
 import to.SubtemaTO;
 import to.TemaTO;
 
@@ -63,8 +65,9 @@ public class Controller extends HttpServlet {
             case "preguntas":
                 getPreguntas(request, response);
                 break;
-            default:
-                throw new AssertionError();
+            case "tienda":
+                getArticulosTienda(request, response);
+                break;
         }
 
     }
@@ -133,7 +136,7 @@ public class Controller extends HttpServlet {
         System.out.println(id);
         try {
             List<TemaTO> lista = DAOFactory.getInstance().getTemaDAO().getTemasByAsignatura(id);
-            System.out.println("servelt getTemas" + lista);
+            System.out.println("Servlet getTemas : " + lista);
             request.setAttribute("lista", lista);
             RequestDispatcher disp = request.getRequestDispatcher("/views/temas.jsp");
             disp.forward(request, response);
@@ -154,23 +157,17 @@ public class Controller extends HttpServlet {
          * parametro un id =>request.getParametrer("id")
          */
         int id = Integer.parseInt(request.getParameter("id"));
-        System.out.println("IdTema"+id);
+        System.out.println("IdTema : " + id);
         try {
             List<SubtemaTO> lista = DAOFactory.getInstance().getSubtemaDAO().getSubtemasByTema(id);
             System.out.println("servelt getSubTemas" + lista);
             request.setAttribute("lista", lista);
             RequestDispatcher disp = request.getRequestDispatcher("/views/subTemas.jsp");
             disp.forward(request, response);
-            // PrintWriter out = response.getWriter();
-            /* lista.forEach((a) -> {
-                out.println(a.getNombre());
-                out.println(a.getIdTema());
-                out.println(a.getIdAsignatura().getIdAsignatura());
-            });*/
         } catch (SQLException | IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     private void getPreguntas(HttpServletRequest request, HttpServletResponse response) {
@@ -178,6 +175,17 @@ public class Controller extends HttpServlet {
          * obtiene las preguntas por subtema recibe un id
          * =>request;getParametrer("id")
          */
+        int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println("IdSubTema : " + id);
+        try {
+            List<PreguntaTO> lista = DAOFactory.getInstance().getPreguntaDAO().getPreguntasBySubtema(id);
+            System.out.println("servelt getPreguntas" + lista);
+            request.setAttribute("lista", lista);
+            RequestDispatcher disp = request.getRequestDispatcher("/views/preguntas.jsp");
+            disp.forward(request, response);
+        } catch (SQLException | IOException | ServletException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void isUser(HttpServletRequest request, HttpServletResponse response) {
@@ -190,6 +198,18 @@ public class Controller extends HttpServlet {
             System.out.println("Error en el login" + ex.getMessage());
         }
 
+    }
+
+    private void getArticulosTienda(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            List<ArticuloTO> lista = DAOFactory.getInstance().getArticulo().getArticulos();
+            System.out.println("servelt articulos" + lista);
+            request.setAttribute("lista", lista);
+            RequestDispatcher disp = request.getRequestDispatcher("/views/articulos.jsp");
+            disp.forward(request, response);
+        } catch (SQLException | IOException | ServletException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

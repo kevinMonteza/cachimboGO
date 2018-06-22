@@ -41,6 +41,10 @@ public class DAOFactory {
         return new DificultadDAO(connection);
     }
     
+    public IArticulo getArticulo() throws SQLException{
+        return new ArticuloDAO(connection);
+    }
+    
     public IPreguntaDAO getPreguntaDAO() throws SQLException{
         return new PreguntaDAO(connection);
     }
