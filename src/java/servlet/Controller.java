@@ -68,6 +68,9 @@ public class Controller extends HttpServlet {
             case "tienda":
                 getArticulosTienda(request, response);
                 break;
+            case "formulario":
+                setUser(request, response);
+                break;
         }
 
     }
@@ -210,6 +213,10 @@ public class Controller extends HttpServlet {
         } catch (IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void setUser(HttpServletRequest request, HttpServletResponse response) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -1,53 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Formulario</title>
-    <meta charset="utf-8">
-    <link type="text/css" href="style.css" rel="stylesheet" />
-</head>
- 
-<body>
-    <div id="registrar">
-            <a href="login.html"</a>Regresar</a>
-    </div>
-    <div id="envoltura">
-        <div id="contenedor">
- 
-            <div id="cabecera">
-                <img src="./../css/images/logo.gif" >
-            </div>
- 
-            <div id="cuerpo">
- 
-                <form id="form-login" action="#" method="post" >
-                    <p><label for="nombre">Nombre:</label></p>
-                        <input name="nombre" type="text" id="nombre" class="nombre" placeholder="Pon tu nombre" autofocus=""/ ></p>
- 
-                    <!--=============================================================================================-->
-                    <!--La sisguientes 2 líneas son para agregar campos al formulario con sus respectivos labels-->
-                    <!--Puedes usar tantas como necesites-->
-                    <p><label for="apellidos">Apellidos:</label></p>
-                        <input name="apellidos" type="text" id="apellidos" class="apellidos" placeholder="Pon tus apellidos" /></p>
-                    <!--=============================================================================================-->
- 
-                    <p><label for="correo">Correo:</label></p>
-                        <input name="correo" type="text" id="correo" class="correo" placeholder="Pon tu mail" /></p>
- 
-                    <p><label for="pass">Password:</label></p>
-                        <input name="pass" type="password" id="pass" class="pass" placeholder="Pon tu contraseña"/ ></p>
- 
-                    <p><label for="repass">Repetir Password:</label></p>
-                        <input name="repass" type="password" id="repass" class="repass" placeholder="Repite contraseña" /></p>
- 
-                    <p id="bot"><input name="submit" type="submit" id="boton" value="Registrar" class="boton"/></p>
-                </form>
-            </div>
- 
-            <div id="pie">Sistema de Login Y Registro</div>
-        </div><!-- fin contenedor -->
- 
-    </div>
- 
-</body>
- 
+    <head>
+        <title>Formulario</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <script src="JQuery/jquery-3.1.1.js"></script>
+        <!-- vinculo a bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- Temas-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+        <!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->
+        <link rel="stylesheet" type="text/css" href="CSS/estilo.css">
+    </head>
+
+    <body>
+            <div id="Contenedor">
+                <div class="panel panel-default">
+                     <label> Formulario</label>
+                </div>
+               
+                <div class="ContentForm">
+                    
+                    <form id="form-login" action="#" method="post" >
+                        <input type="hidden" name="instruccion" type="fromulario"/>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon" id="sizing-addon1">
+                            </span>
+                            <input type="text" class="form-control" name="nombre" placeholder="Nombres" id="Correo" aria-describedby="sizing-addon1">
+                        </div>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon" id="sizing-addon1">
+                            </span>
+                            <input type="text" class="form-control" name="apellido" placeholder="Apellidos" id="Correo" aria-describedby="sizing-addon1">
+                        </div>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon" id="sizing-addon1">
+                            </span>
+                            <input type="email" class="form-control" name="correo" placeholder="Correo" id="Correo" aria-describedby="sizing-addon1">
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon" id="sizing-addon1">
+                            </span>
+                            <input type="text" class="form-control" name="usuario" placeholder="Usuario" id="Correo" aria-describedby="sizing-addon1">
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-addon" id="sizing-addon1">
+                            </span>
+                            <input type="password" class="form-control" name="password" placeholder="pass" id="Correo" aria-describedby="sizing-addon1">
+                        </div>
+                        <input name="submit" type="submit" id="boton" value="Registrar" class="btn btn-lg btn-primary btn-block btn-signin"/>
+                        <a href="login.html">Regresar</a>
+                    </form>
+                </div>
+
+                <div id="pie">Sistema de Login Y Registro</div>
+            </div><!-- fin contenedor -->
+
+
+    </body>
+
 </html>
