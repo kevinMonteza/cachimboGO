@@ -7,44 +7,67 @@ package to;
 
 /**
  *
- * @author kevinMC
+ * @author isaac
  */
 public class ArticuloTO {
-    private int id_articulo;
+    private Integer id_articulo;
     private String nombre;
     private String descripcion;
-    private Double costo;
+    private Integer costo;
 
-    public int getId_articulo() {
+    /**
+     * @return the id_articulo
+     */
+    public Integer getIdArticulo() {
         return id_articulo;
     }
 
-    public void setId_articulo(int id_articulo) {
+    /**
+     * @param id_articulo the id_articulo to set
+     */
+    public void setIdArticulo(Integer id_articulo) {
         this.id_articulo = id_articulo;
     }
 
+    /**
+     * @return the nombre
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * @param nombre the nombre to set
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * @return the descripcion
+     */
     public String getDescripcion() {
         return descripcion;
     }
 
+    /**
+     * @param descripcion the descripcion to set
+     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    public Double getCosto() {
+    /**
+     * @return the costo
+     */
+    public Integer getCosto() {
         return costo;
     }
 
-    public void setCosto(Double costo) {
+    /**
+     * @param costo the costo to set
+     */
+    public void setCosto(Integer costo) {
         this.costo = costo;
     }
-    
 }

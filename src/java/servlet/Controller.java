@@ -122,7 +122,7 @@ public class Controller extends HttpServlet {
             lista.forEach((a) -> {
                 out.println("<button id='" + a.getNombre() + "' class='w3-bar-item w3-button' onclick='openCourse(" + a.getIdAsignatura() + ", this.id)'>" + a.getNombre() + "</button>");
             });
-        } catch (IOException | SQLException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -146,7 +146,7 @@ public class Controller extends HttpServlet {
                 out.println(a.getIdTema());
                 out.println(a.getIdAsignatura().getIdAsignatura());
             });*/
-        } catch (SQLException | IOException | ServletException ex) {
+        } catch (IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -164,7 +164,7 @@ public class Controller extends HttpServlet {
             request.setAttribute("lista", lista);
             RequestDispatcher disp = request.getRequestDispatcher("/views/subTemas.jsp");
             disp.forward(request, response);
-        } catch (SQLException | IOException | ServletException ex) {
+        } catch (IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -183,7 +183,7 @@ public class Controller extends HttpServlet {
             request.setAttribute("lista", lista);
             RequestDispatcher disp = request.getRequestDispatcher("/views/preguntas.jsp");
             disp.forward(request, response);
-        } catch (SQLException | IOException | ServletException ex) {
+        } catch (IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -202,12 +202,12 @@ public class Controller extends HttpServlet {
 
     private void getArticulosTienda(HttpServletRequest request, HttpServletResponse response) {
         try {
-            List<ArticuloTO> lista = DAOFactory.getInstance().getArticulo().getArticulos();
+            List<ArticuloTO> lista = DAOFactory.getInstance().getArticuloDAO().getArticulos();
             System.out.println("servelt articulos" + lista);
             request.setAttribute("lista", lista);
             RequestDispatcher disp = request.getRequestDispatcher("/views/articulos.jsp");
             disp.forward(request, response);
-        } catch (SQLException | IOException | ServletException ex) {
+        } catch (IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
