@@ -9,7 +9,6 @@ import component.*;
 import database.MysqlConnection;
 import design.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  *
@@ -17,67 +16,67 @@ import java.sql.SQLException;
  */
 public class DAOFactory {
 
-    private static final DAOFactory daoFac;
-
+    private static DAOFactory daoFac;
     private static Connection connection;
-    
-    static{
+
+    static {
         daoFac = new DAOFactory();
         connection = MysqlConnection.getConexion();
     }
-    
-    public static DAOFactory getInstance(){
+
+    public static DAOFactory getInstance() {
         return daoFac;
     }
-    
-    public IAsignaturaDAO getAsignaturaDAO() throws SQLException{
-        if(connection==null){
-            System.out.println("Conexion nula");
-        }
+
+    public IAsignaturaDAO getAsignaturaDAO() {
         return new AsignaturaDAO(connection);
     }
-    
-    public IDificultadDAO getDificultadDAO(){
+
+    public IDificultadDAO getDificultadDAO() {
         return new DificultadDAO(connection);
     }
-    
-    public IArticulo getArticulo() throws SQLException{
-        return new ArticuloDAO(connection);
-    }
-    
-    public IPreguntaDAO getPreguntaDAO() throws SQLException{
+
+    public IPreguntaDAO getPreguntaDAO() {
         return new PreguntaDAO(connection);
     }
-    
-    public IRespuestaDAO getRespuestaDAO(){
+
+    public IRespuestaDAO getRespuestaDAO() {
         return new RespuestaDAO(connection);
     }
-    
-    public ISubtemaDAO getSubtemaDAO() throws SQLException{
+
+    public ISubtemaDAO getSubtemaDAO(){
         return new SubtemaDAO(connection);
     }
-    
-    public ITemaDAO getTemaDAO() throws SQLException{
+
+    public ITemaDAO getTemaDAO() {
         return new TemaDAO(connection);
     }
-    
-    public ITipoPreguntaDAO getTipoPreguntaDAO(){
+
+    public ITipoPreguntaDAO getTipoPreguntaDAO() {
         return new TipoPreguntaDAO(connection);
     }
-    
-    public IUsuarioAsignaturaDAO getUsuarioAsignaturaDAO(){
+
+    public IUsuarioAsignaturaDAO getUsuarioAsignaturaDAO() {
         return new UsuarioAsignaturaDAO(connection);
     }
-    
-    public IUsuarioDAO getUsuarioDAO(){
+
+    public IUsuarioDAO getUsuarioDAO() {
         return new UsuarioDAO(connection);
     }
-    
-    public IUsuarioSubtemaDAO getUsuarioSubtemaDAO(){
+
+    public IUsuarioSubtemaDAO getUsuarioSubtemaDAO() {
         return new UsuarioSubtemaDAO(connection);
     }
-    
-    public IUsuarioTemaDAO getUsuarioTemaDAO(){
+
+    public IUsuarioTemaDAO getUsuarioTemaDAO() {
         return new UsuarioTemaDAO(connection);
+    }
+
+    public IArticuloDAO getArticuloDAO() {
+        return new ArticuloDAO(connection);
+    }
+
+    public IUsuarioArticuloDAO getUsuarioArticuloDAO() {
+        return new UsuarioArticuloDAO(connection);
     }
 }

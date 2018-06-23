@@ -30,7 +30,7 @@ public class PreguntaDAO implements IPreguntaDAO {
     private PreparedStatement st;
     private List<PreguntaTO> preguntas;
 
-    public PreguntaDAO(Connection connection) throws SQLException {
+    public PreguntaDAO(Connection connection) {
         this.connection = connection;
     }
 

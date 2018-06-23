@@ -26,7 +26,7 @@ public class AsignaturaDAO implements IAsignaturaDAO {
     private PreparedStatement st;
     private List<AsignaturaTO> asignaturas;
 
-    public AsignaturaDAO(Connection connection) throws SQLException {
+    public AsignaturaDAO(Connection connection) {
         this.connection = connection;
     }
 

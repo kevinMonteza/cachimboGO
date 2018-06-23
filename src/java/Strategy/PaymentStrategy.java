@@ -3,15 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package design;
-
-import java.util.List;
-import to.ArticuloTO;
+package strategy;
 
 /**
  *
- * @author kevinMC
+ * @author isaac
  */
-public interface IArticulo {
-    public List<ArticuloTO> getArticulos();
+public interface PaymentStrategy {
+    public void pay(Double amount);
 }
