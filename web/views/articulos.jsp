@@ -17,7 +17,7 @@
         <th>Precio</th>
         <%for (ArticuloTO Stema : lista) {%>
         <tr>
-            <td><button id="<%= Stema.getNombre()%>" class="btn btn-info btn-lg" style="margin: .3em;"onclick='buyArticulo("<%= Stema.getId_articulo()%>","<%= Stema.getCosto()%>")'><%= Stema.getNombre()%></button>&nbsp;&nbsp;</td>
+            <td><button id="<%= Stema.getNombre()%>" class="btn btn-info btn-lg" style="margin: .3em;"onclick='buyArticulo("<%= Stema.getIdArticulo()%>","<%= Stema.getCosto()%>")'><%= Stema.getNombre()%></button>&nbsp;&nbsp;</td>
             <td><span style="margin-right: .2em;"><%=Stema.getDescripcion()%></span></td><td>&nbsp;&nbsp; <span><%=Stema.getCosto()%></span></td>
         </tr>
 

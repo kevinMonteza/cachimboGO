@@ -16,4 +16,5 @@ public interface IUsuarioDAO {
     public boolean usuarioAuth(UsuarioTO usuario);
     public UsuarioTO getUser(UsuarioTO usuario);
     public boolean insertUsuario(UsuarioTO usuario);
+    public boolean updateUser(UsuarioTO usuario);
 }

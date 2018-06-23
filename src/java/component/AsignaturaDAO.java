@@ -66,7 +66,7 @@ public class AsignaturaDAO implements IAsignaturaDAO {
     public List<AsignaturaTO> getAsignaturas() {
         asignaturas = new ArrayList<>();
         try {
-            String sql = "select id_asignatura, nombre, id_tipo_asignatura from asignatura;";
+            String sql = "select id_asignatura, nombre, id_tipo_asignatura from asignatura where id_tipo_asignatura=0;";
             st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while(rs.next()){

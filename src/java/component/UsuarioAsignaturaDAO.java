@@ -22,12 +22,13 @@ import to.UsuarioTO;
  *
  * @author isaac
  */
-public class UsuarioAsignaturaDAO implements IUsuarioAsignaturaDAO{
+public class UsuarioAsignaturaDAO implements IUsuarioAsignaturaDAO {
+
     private final Connection connection;
     private PreparedStatement st;
     private List<UsuarioAsignaturaTO> usuarioAsignaturas;
-    
-    public UsuarioAsignaturaDAO(Connection connection){
+
+    public UsuarioAsignaturaDAO(Connection connection) {
         this.connection = connection;
     }
 
@@ -35,14 +36,13 @@ public class UsuarioAsignaturaDAO implements IUsuarioAsignaturaDAO{
     public List<UsuarioAsignaturaTO> getAsignaturaByUsuario(UsuarioTO usuario) {
         usuarioAsignaturas = new ArrayList<>();
         try {
-            String sql = "select A.id_asignatura, A.nombre, A.id_tipo_asignatura, porcentaje "
-                    + "from usuario_asignatura as UA inner join asignatura as A "
-                    + "on UA.id_asignatura = A.id_asignatura"
-                    + "where id_usuario = ?;";
+            String sql = "select "
+                    + "     a.id_asignatura, a.nombre, a.id_tipo_asignatura, ua.porcentaje"
+                    + "  from usuario_asignatura as ua inner join asignatura a on ua.id_asignatura = a.id_asignatura where ua.id_usuario=?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, usuario.getIdUsuario());
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 AsignaturaTO asignatura = new AsignaturaTO();
                 UsuarioAsignaturaTO usuarioAsignatura = new UsuarioAsignaturaTO();
                 usuarioAsignatura.setIdUsuario(usuario);
@@ -150,6 +150,5 @@ public class UsuarioAsignaturaDAO implements IUsuarioAsignaturaDAO{
             }
         }
     }
-    
-    
+
 }

@@ -75,7 +75,7 @@ public class UsuarioArticuloDAO implements IUsuarioArticuloDAO {
     public boolean insertUsuarioArticulo(UsuarioArticuloTO usuarioArticulo) {
         String sql = "insert into usuario_articulo"
                 + "(id_usuario, "
-                + "id_articulo"
+                + "id_articulo)"
                 + "values(?, ?);";
         try {
             connection.setAutoCommit(false);

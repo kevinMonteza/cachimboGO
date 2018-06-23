@@ -109,7 +109,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     public UsuarioTO getUser(UsuarioTO usuario) {
          UsuarioTO u = null;
         try {
-            String sql = "select id_usuario from usuario where usuario = ? and password = ?";
+            String sql = "select * from usuario where usuario = ? and password = ?";
             st = connection.prepareStatement(sql);
             st.setString(1, usuario.getUsuario());
             st.setString(2, usuario.getPassword());
@@ -118,6 +118,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                 u= new UsuarioTO();
                 u.setIdUsuario(rs.getInt(1));
                 u.setUsuario(rs.getString(2));
+                u.setPassword(rs.getString(3));
                 u.setNombres(rs.getString(4));
                 u.setApellido(rs.getString(5));
                 u.setCorreo(rs.getString(6));
@@ -139,4 +140,41 @@ public class UsuarioDAO implements IUsuarioDAO {
             }
         }
     }
+
+    @Override
+    public boolean updateUser(UsuarioTO usuario) {
+        System.out.println("EN usuairoDAO"+usuario.getMonedas());
+        String sql = "update usuario set monedas=? where id_usuario=?;";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, usuario.getMonedas());
+            st.setInt(2, usuario.getIdUsuario());
+            st.executeUpdate();
+                return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            return false;
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }
+

@@ -29,11 +29,29 @@ and open the template in the editor.
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                $.get('Controller', {
-                    instruccion: "asignaturas"
-                }, function (response) {
-                    // console.log(response);
-                    $("#asignaturasBoton").append(response);
+                $("#asignaturas").hover(function(){
+                    getAsigaturas();
+                });
+                function getAsigaturas() {
+                    $.get('Controller', {
+                        instruccion: "asignaturas"
+                    }, function (response) {
+                        // console.log(response);
+                        $("#asignaturasBoton").empty();
+                        $("#asignaturasBoton").append(response);
+                    });
+                }
+                
+
+                $("#perfil").click(function () {
+                    var bt = $("#modalBody");
+                    $.get('Controller', {
+                        instruccion: "perfil"
+                    }, function (response) {
+                        // console.log(response);
+                        bt.empty();
+                        bt.append(response);
+                    });
                 });
             });
             function openCourse(idCourse, nameCourse) {
@@ -46,7 +64,7 @@ and open the template in the editor.
                 console.log("OpenCourse Parametro : ", nameCourse);
                 document.getElementById("temas").innerHTML = nameCourse;
                 $("#subtemas").empty();
-                document.getElementById("subtemas").innerHTML="subtemas";
+                document.getElementById("subtemas").innerHTML = "subtemas";
 
                 document.getElementById("temas").value = nameCourse;
                 cambiarContenido(nameCourse, "El conteido de este curso......");
@@ -94,24 +112,33 @@ and open the template in the editor.
                 });
             }
             function listarArticulosTienda() {
-                    document.getElementById("modalHeaderTitulo").innerHTML = "TIENDA";
-                    var bt = $("#modalBody");
-                    $.get('Controller', {
-                        instruccion: "tienda"
-                    }, function (response) {
-                        console.log(response); // aca recibe los temas de cada curso                    
-                        bt.empty();
-                        bt.append(response);
-                    });
+                document.getElementById("modalHeaderTitulo").innerHTML = "TIENDA";
+                var bt = $("#modalBody");
+                $.get('Controller', {
+                    instruccion: "tienda"
+                }, function (response) {
+                    console.log(response); // aca recibe los temas de cada curso                    
+                    bt.empty();
+                    bt.append(response);
+                });
             }
             function cambiarContenido(titulo, contenido) {
                 $("#titulo").html(titulo);
                 $("#contenido").html(contenido + titulo);
 
             }
-            function ruedaNormal() {
-
-
+            function ruedaNormal() {}
+            function buyArticulo(idArticulo, costo) {
+                $.get('Controller', {
+                    instruccion: "compras",
+                    id: idArticulo,
+                    costo: costo
+                }, function (response) {
+                    // console.log(response);
+                    alert(response);
+                    // bt.empty();
+                    // bt.append(response);
+                });
             }
         </script>
 
@@ -131,7 +158,15 @@ and open the template in the editor.
             <p id="algo">welcome</p>
         </div>
         <div id="headerBar" class="w3-bar w3-grey w3-card-4">
-            <button class="w3-bar-item w3-button w3-border-right">Inicio</button>
+            <div class="w3-dropdown-hover">
+                <button type="button" class="w3-button w3-border-right" id="inicio">Inicio</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4" id="subMenuInicio">
+                    <button class="w3-bar-item w3-button" id="perfil" data-toggle="modal" data-target="#myModal">Perfil</button>
+                    <button class="w3-bar-item w3-button" id="tienda">Tienda</button>
+                    <button class="w3-bar-item w3-button" id="salir">Salir</button>
+                </div> 
+            </div>
+
             <button class="w3-bar-item w3-button w3-border-right">Ayuda</button>
             <div class="w3-dropdown-hover">
                 <button type="button" class="w3-button w3-border-right" id="asignaturas" value="Asignaturas">Asignaturas</button>
