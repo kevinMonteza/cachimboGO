@@ -104,4 +104,39 @@ public class UsuarioDAO implements IUsuarioDAO {
             }
         }
     }
+
+    @Override
+    public UsuarioTO getUser(UsuarioTO usuario) {
+         UsuarioTO u = null;
+        try {
+            String sql = "select id_usuario from usuario where usuario = ? and password = ?";
+            st = connection.prepareStatement(sql);
+            st.setString(1, usuario.getUsuario());
+            st.setString(2, usuario.getPassword());
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                u= new UsuarioTO();
+                u.setIdUsuario(rs.getInt(1));
+                u.setUsuario(rs.getString(2));
+                u.setNombres(rs.getString(4));
+                u.setApellido(rs.getString(5));
+                u.setCorreo(rs.getString(6));
+                u.setMonedas(rs.getInt(7));
+                rs.close();
+                return u;
+            }
+            return u;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return u;
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }
