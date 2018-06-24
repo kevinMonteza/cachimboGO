@@ -19,5 +19,5 @@
     <input type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 4)' value="<%= lista.getClave4()%>"><%=lista.getClave4()%><br>
     <input type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 5)' value="<%= lista.getClave5()%>"><%=lista.getClave5()%><br>
     <label id="respuesta"></label>
-    <button onclick="siguiente()" style="display:none;" id="btonSgt">Siguiente</button>
+    <button onclick="siguiente(<%= i%>)" style="display:none;" id="btonSgt">Siguiente</button>
 </div>
