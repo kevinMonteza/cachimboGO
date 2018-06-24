@@ -5,6 +5,9 @@
  */
 package strategy;
 
+import dao.DAOFactory;
+import to.UsuarioTO;
+
 /**
  *
  * @author isaac
@@ -14,9 +17,14 @@ public class CashStrategy implements PaymentStrategy {
     public CashStrategy() {
     }
 
-    @Override
-    public void pay(Double amount) {
-
+   public void pay(Double amount,UsuarioTO usuario) {
+        if(amount==10.0){
+            usuario.setMonedas(usuario.getMonedas()+10);
+        }else if(amount==20.0){
+             usuario.setMonedas(usuario.getMonedas()+20);
+        }else{
+             usuario.setMonedas(usuario.getMonedas()+30);
+        }
+        DAOFactory.getInstance().getUsuarioDAO().updateUser(usuario);
     }
-
 }

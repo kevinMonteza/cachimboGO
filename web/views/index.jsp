@@ -20,18 +20,30 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
-
-
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- jQuery library -->
         <script src="JQuery/jquery-3.1.1.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                $("#asignaturas").hover(function(){
+                $.get('Controller', {
+                    instruccion: "getMonedas"
+                }, function (response) {
+                    // console.log(response);
+                    $("#mostrarMonedas").empty().append(response);
+                }); 
+                $("#asignaturas").hover(function () {
                     getAsigaturas();
                 });
+                $("#ComprarMonedas").hover(function(){
+                   $.get('Controller', {
+                    instruccion: "getMonedas"
+                }, function (response) {
+                    // console.log(response);
+                    $("#mostrarMonedas").empty().append(response);
+                }); 
+                });
+                
                 function getAsigaturas() {
                     $.get('Controller', {
                         instruccion: "asignaturas"
@@ -41,7 +53,7 @@ and open the template in the editor.
                         $("#asignaturasBoton").append(response);
                     });
                 }
-                
+
 
                 $("#perfil").click(function () {
                     var bt = $("#modalBody");
@@ -53,7 +65,24 @@ and open the template in the editor.
                         bt.append(response);
                     });
                 });
+                
+                $("#tienda").click(function () {
+                    listarArticulosTienda();
+                });
+                
+                $("#ComprarMonedas").click(function () {
+                    $.get('Controller', {
+                        instruccion: "comprarMonedas"
+                    }, function (response) {
+                        // console.log(response);
+                        document.getElementById("modalHeaderTitulo").innerHTML = "Comprar Monedas";
+                         var bt = $("#modalBody");
+                         bt.empty().append(response);
+                    });
+                });
+
             });
+            
             function openCourse(idCourse, nameCourse) {
                 //  document.getElementById("modalHeaderTitulo").value = nameCourse;                
                 // document.getElementById("modalHeaderTitulo").innerHTML = nameCourse;
@@ -140,6 +169,37 @@ and open the template in the editor.
                     // bt.append(response);
                 });
             }
+            function mostrar(tipo){
+                $("#"+tipo).slideToggle();
+            }
+            function pagar(tipo){
+               let monto = $('input[name="valor"]:checked').val();
+                alert(monto);
+               $.get('Controller', {
+                    instruccion: "pagar",
+                    tipo: tipo,
+                    monto: monto
+                }, function (response) {
+                    // console.log(response);
+                    alert(response);
+                     $("#"+tipo).hide();
+                    // bt.empty();
+                    // bt.append(response);
+                });
+            }
+            function radioEnviar(idPregunta, clave) {
+                //console.log(idPregunta, clave);
+                var bt = $("#" + idPregunta);
+                $.get('Controller', {
+                    instruccion: "preguntasErradas",
+                    idP: idPregunta,
+                    c: clave
+                }, function (response) {
+                    //console.log(response); // aca recibe los temas de cada curso                    
+                    bt.empty();
+                    bt.append(response);
+                });
+            }
         </script>
 
     </head>
@@ -162,8 +222,8 @@ and open the template in the editor.
                 <button type="button" class="w3-button w3-border-right" id="inicio">Inicio</button>
                 <div class="w3-dropdown-content w3-bar-block w3-card-4" id="subMenuInicio">
                     <button class="w3-bar-item w3-button" id="perfil" data-toggle="modal" data-target="#myModal">Perfil</button>
-                    <button class="w3-bar-item w3-button" id="tienda">Tienda</button>
-                    <button class="w3-bar-item w3-button" id="salir">Salir</button>
+                    <button class="w3-bar-item w3-button" data-toggle="modal" data-target="#myModal" id="tienda">Tienda</button>
+                    <a class="w3-bar-item w3-button" href="#" id="salir">Cerrar Sesion</a>
                 </div> 
             </div>
 
@@ -189,14 +249,24 @@ and open the template in the editor.
             </div> 
         </div>
 
-        <div id="inicio" class="w3-container inicio">
-            <div>
+
+        <div id="inicio" class="w3-panel w3-leftbar w3-sand w3-xxlarge w3-serif inicio">
+            <div class="w3-panel">
                 <button id="tienda" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="listarArticulosTienda()"><spam>Tienda</spam></button>
             </div>
-            <h2 id="titulo">Bienvenidos</h2>
-            <p id="contenido">---</p>
-            <button id="buttonModalRuedaNormal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="ruedaNormal()">Nueva Rueda</button>
+            <div class="w3-panel">
+                <button id="ComprarMonedas" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" title="Comprar">Monedas:  <spam id="mostrarMonedas" style="font-family:Courier New;"></spam></button>
+            </div>
+
+            <div>
+                <h2 id="titulo">Bienvenidos</h2>
+                <p id="contenido">---</p>
+                <button id="buttonModalRuedaNormal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="ruedaNormal()">Nueva Rueda</button>
+            </div>
+
         </div>
+
+
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
 

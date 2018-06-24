@@ -354,6 +354,7 @@ public class PreguntaDAO implements IPreguntaDAO {
     @Override
     public List<PreguntaTO> getPreguntasRandom(Integer id_subtema, Integer tipo) {
         Integer i = 0, cantidad;
+        System.out.println("entro");
         preguntas = new ArrayList<>();
         List<PreguntaTO> preguntasRandom = new ArrayList<>();
         List<Integer> randoms = new ArrayList<>();
@@ -372,7 +373,7 @@ public class PreguntaDAO implements IPreguntaDAO {
                 i++;
             }
         }
-        return preguntas;
+        return preguntasRandom;
     }
 
 }

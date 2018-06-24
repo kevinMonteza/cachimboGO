@@ -9,7 +9,6 @@ import Adapter.DAOAdapter;
 import dao.DAOFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import strategy.StrategyFactory;
 import to.ArticuloTO;
 import to.AsignaturaTO;
 import to.PreguntaTO;
@@ -36,11 +36,12 @@ import to.UsuarioTO;
  */
 @WebServlet(name = "Controller", urlPatterns = {"/Controller"})
 public class Controller extends HttpServlet {
-    
+
     Dispacher dispacher;
     DAOAdapter adapter;
     UsuarioTO usuario;
     List<AsignaturaTO> listaAsignaturas;
+    List<PreguntaTO> listaPreguntaTO;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -84,8 +85,16 @@ public class Controller extends HttpServlet {
             case "compras":
                 comprarArticulo(request, response);
                 break;
+            case "getMonedas":
+                getMonedas(request, response);
+                break;
+            case "comprarMonedas":
+                comprarMonedas(request, response);
+                break;
+            case "pagar":pagar(request,response);
+            break;
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -132,8 +141,9 @@ public class Controller extends HttpServlet {
             /**
              * Aca obtenemos las asiganturas desde los daos
              */
+            adapter= new DAOAdapter();
             System.out.println("idUser" + usuario.getIdUsuario());
-            List<UsuarioAsignaturaTO> lista = DAOFactory.getInstance().getUsuarioAsignaturaDAO().getAsignaturaByUsuario(usuario);
+            List<UsuarioAsignaturaTO> lista = adapter.ObtenerAsignaturaPorUsuario(usuario);
             PrintWriter out = response.getWriter();
             System.out.println("esta en el servlet getAsiganturas" + lista);
             lista.forEach((a) -> {
@@ -143,7 +153,7 @@ public class Controller extends HttpServlet {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void getTemas(HttpServletRequest request, HttpServletResponse response) {
         /**
          * aca se obtiene los temas por asignatura desdelos daos recibe como
@@ -151,8 +161,9 @@ public class Controller extends HttpServlet {
          */
         int id = Integer.parseInt(request.getParameter("id"));
         System.out.println(id);
+         adapter= new DAOAdapter();
         try {
-            List<TemaTO> lista = DAOFactory.getInstance().getTemaDAO().getTemasByAsignatura(id);
+            List<TemaTO> lista = adapter.obtenerTemasPorAsignatura(id);
             System.out.println("Servlet getTemas : " + lista);
             request.setAttribute("lista", lista);
             RequestDispatcher disp = request.getRequestDispatcher("/views/temas.jsp");
@@ -167,7 +178,7 @@ public class Controller extends HttpServlet {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void getSubtemas(HttpServletRequest request, HttpServletResponse response) {
         /**
          * aca obtenemos los subtemas por tema desde los daos recibe como
@@ -175,8 +186,9 @@ public class Controller extends HttpServlet {
          */
         int id = Integer.parseInt(request.getParameter("id"));
         System.out.println("IdTema : " + id);
+         adapter= new DAOAdapter();
         try {
-            List<SubtemaTO> lista = DAOFactory.getInstance().getSubtemaDAO().getSubtemasByTema(id);
+            List<SubtemaTO> lista = adapter.obtenerSubtemasPorTema(id);
             System.out.println("servelt getSubTemas" + lista);
             request.setAttribute("lista", lista);
             RequestDispatcher disp = request.getRequestDispatcher("/views/subTemas.jsp");
@@ -184,9 +196,9 @@ public class Controller extends HttpServlet {
         } catch (IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     private void getPreguntas(HttpServletRequest request, HttpServletResponse response) {
         /**
          * obtiene las preguntas por subtema recibe un id
@@ -194,17 +206,18 @@ public class Controller extends HttpServlet {
          */
         int id = Integer.parseInt(request.getParameter("id"));
         System.out.println("IdSubTema : " + id);
+        adapter = new DAOAdapter();
         try {
-            List<PreguntaTO> lista = DAOFactory.getInstance().getPreguntaDAO().getPreguntasBySubtema(id);
-            System.out.println("servelt getPreguntas" + lista);
-            request.setAttribute("lista", lista);
+             listaPreguntaTO = adapter.obtenerPreguntasAleatorias(id, 0);
+            System.out.println("servelt getPreguntas" + listaPreguntaTO);
+            request.setAttribute("lista", listaPreguntaTO);
             RequestDispatcher disp = request.getRequestDispatcher("/views/preguntas.jsp");
             disp.forward(request, response);
         } catch (IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void isUser(HttpServletRequest request, HttpServletResponse response) {
         dispacher = new Dispacher();
         String view = dispacher.isUser(request);
@@ -212,16 +225,16 @@ public class Controller extends HttpServlet {
         usuario.setUsuario(request.getParameter("uname"));
         usuario.setPassword(request.getParameter("upass"));
         try {
-            
+
             usuario = DAOFactory.getInstance().getUsuarioDAO().getUser(usuario);
             RequestDispatcher dispatcher = request.getRequestDispatcher(view);
             dispatcher.forward(request, response);
         } catch (ServletException | IOException ex) {
             System.out.println("Error en el login" + ex.getMessage());
         }
-        
+
     }
-    
+
     private void getArticulosTienda(HttpServletRequest request, HttpServletResponse response) {
         try {
             adapter = new DAOAdapter();
@@ -235,7 +248,7 @@ public class Controller extends HttpServlet {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void setUser(HttpServletRequest request, HttpServletResponse response) {
         adapter = new DAOAdapter();
         usuario = new UsuarioTO();
@@ -277,9 +290,9 @@ public class Controller extends HttpServlet {
         } catch (IOException | ServletException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
     private void getUser(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.setAttribute("lista", usuario);
@@ -289,7 +302,7 @@ public class Controller extends HttpServlet {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void comprarArticulo(HttpServletRequest request, HttpServletResponse response) {
         try {
             ArticuloTO articulo = new ArticuloTO();
@@ -297,33 +310,33 @@ public class Controller extends HttpServlet {
             PrintWriter out = response.getWriter();
             UsuarioAsignaturaTO usuarioAsignatura;
             AsignaturaTO asignatura;
-            
+
             System.out.println("Servlet comprar Articulos");
             int id_articulo = Integer.parseInt(request.getParameter("id"));
             int costo = Integer.parseInt(request.getParameter("costo"));
-            
+
             articulo.setCosto(costo);
             articulo.setIdArticulo(id_articulo);
-            
+
             asignatura = new AsignaturaTO();
             asignatura.setIdAsignatura(id_articulo);
-            
+
             System.out.println("monedas:" + usuario.getMonedas() + " costo es:" + articulo.getCosto());
-            
+
             if (usuario.getMonedas() >= articulo.getCosto()) {
                 adapter = new DAOAdapter();
                 usuarioArt = new UsuarioArticuloTO();
                 usuarioArt.setIdArticulo(articulo);
                 usuarioArt.setIdUsuario(usuario);
-                
+
                 adapter.insertarUsuarioArticulo(usuarioArt);
-                
+
                 usuarioAsignatura = new UsuarioAsignaturaTO();
                 usuarioAsignatura.setIdAsignatura(asignatura);
                 usuarioAsignatura.setIdUsuario(usuario);
                 usuarioAsignatura.setPorcentaje(0.0);
                 adapter.insertarUsuarioAsignatura(usuarioAsignatura);
-                
+
                 usuario.setMonedas(usuario.getMonedas() - costo);
                 System.out.println(DAOFactory.getInstance().getUsuarioDAO().updateUser(usuario));
                 out.print("enhorabuena acabas de adquirir un fantastico modulo");
@@ -333,6 +346,55 @@ public class Controller extends HttpServlet {
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+    }
+
+    private void getMonedas(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            PrintWriter out = response.getWriter();
+            out.print(usuario.getMonedas());
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void comprarMonedas(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            
+            RequestDispatcher disp = request.getRequestDispatcher("/views/pasarela.jsp");
+            disp.forward(request, response);
+        } catch (IOException | ServletException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void pagar(HttpServletRequest request, HttpServletResponse response) {
+        String tipo = request.getParameter("tipo");
+        double monto = Double.parseDouble(request.getParameter("monto"));
+        System.out.println("monto"+monto);
+        StrategyFactory strategy = new StrategyFactory();
+        strategy.getStrategy(tipo).pay(monto,usuario);
+    }
+    private void getPreguntasErradas(HttpServletRequest request, HttpServletResponse response) {
+        String idPregunta = request.getParameter("idP");
+        String clave = request.getParameter("c");
+        int i = 0;
+        try {
+            PrintWriter out = response.getWriter();
+            for (PreguntaTO preguntaTO : listaPreguntaTO) {
+                if (preguntaTO.getIdPregunta().toString().equals(idPregunta) && preguntaTO.getCorrectaNum().toString().equals(clave)) {
+                    out.print("Correcta");
+                    System.out.println("Correcta");
+                    i = 1;
+                    break;
+                }
+            }
+            if (i == 0) {
+                out.print("La Cagaste");
+                System.out.println("La Cagaste");
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }
 }

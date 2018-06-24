@@ -5,6 +5,9 @@
  */
 package strategy;
 
+import dao.DAOFactory;
+import to.UsuarioTO;
+
 /**
  *
  * @author isaac
@@ -16,9 +19,8 @@ public class NullStrategy implements PaymentStrategy{
     }
 
     @Override
-    public void pay(Double amount) {
-        
-    }
-    
+   public void pay(Double amount,UsuarioTO usuario) {
+       
+   }
 }
 

@@ -14,8 +14,8 @@ public class StrategyFactory {
         if(strategyType == null){
             return new NullStrategy();
         }
-        else if(strategyType.equalsIgnoreCase("CASH")){
-            return new CashStrategy();
+        else if(strategyType.equalsIgnoreCase("PAYPAL")){
+            return new ShoppingCart();
         }
         else if(strategyType.equalsIgnoreCase("CARD")){
             return new CardStrategy();

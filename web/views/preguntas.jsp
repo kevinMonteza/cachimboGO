@@ -8,20 +8,15 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    List<PreguntaTO> lista = (List<PreguntaTO>) request.getAttribute("lista");
+    PreguntaTO lista = (PreguntaTO) request.getAttribute("lista");
 %>
 <div class="">
-    <%int i = 0;
-        for (PreguntaTO Pregunta : lista) {
-            i++;%>
-    <label id="<%= Pregunta.getEnunciado()%>" class="w3-bar-item w3-button" onclick='alert("HOLA");'><%= Pregunta.getEnunciado()%></label><br>
-    <input type="radio" name="<%= Pregunta.getEnunciado()%>" value="<%= Pregunta.getClave1()%>"><%= Pregunta.getClave1()%><br>
-    <input type="radio" name="<%= Pregunta.getEnunciado()%>" value="<%= Pregunta.getClave2()%>"><%= Pregunta.getClave2()%><br>
-    <input type="radio" name="<%= Pregunta.getEnunciado()%>" value="<%= Pregunta.getClave3()%>"><%= Pregunta.getClave3()%><br>
-    <input type="radio" name="<%= Pregunta.getEnunciado()%>" value="<%= Pregunta.getClave4()%>"><%= Pregunta.getClave4()%><br>
-    <input type="radio" name="<%= Pregunta.getEnunciado()%>" value="<%= Pregunta.getClave5()%>"><%= Pregunta.getClave5()%><br>
-    <%if (i == 10) {
-                break;
-            }
-        }%>
+    <% int i=1;%>
+    <label id="<%= lista.getEnunciado()%>" class="w3-bar-item w3-button" onclick='alert("HOLA");'><%=i+")"  +  lista.getEnunciado()%></label><br>
+    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave1()%>"><%=i+")"  + lista.getClave1()%><br>
+    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave2()%>"><%=i+")"  + lista.getClave2()%><br>
+    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave3()%>"><%=i+")"  + lista.getClave3()%><br>
+    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave4()%>"><%=i+")"  +lista.getClave4()%><br>
+    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave5()%>"><%=i+")"  + lista.getClave5()%><br>
+    <%i++; }%>
 </div>

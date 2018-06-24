@@ -5,10 +5,12 @@
  */
 package strategy;
 
+import to.UsuarioTO;
+
 /**
  *
  * @author isaac
  */
 public interface PaymentStrategy {
-    public void pay(Double amount);
+    public void pay(Double amount,UsuarioTO u);
 }
