@@ -42,6 +42,7 @@ public class Controller extends HttpServlet {
     UsuarioTO usuario;
     List<AsignaturaTO> listaAsignaturas;
     List<PreguntaTO> listaPreguntaTO;
+    int contador = 0;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -91,8 +92,13 @@ public class Controller extends HttpServlet {
             case "comprarMonedas":
                 comprarMonedas(request, response);
                 break;
-            case "pagar":pagar(request,response);
-            break;
+            case "pagar":
+                pagar(request, response);
+                break;
+            case "respuesta":
+                getRespuesta(request, response);
+                break;
+            case "next": next(request,response);break;
         }
 
     }
@@ -141,7 +147,7 @@ public class Controller extends HttpServlet {
             /**
              * Aca obtenemos las asiganturas desde los daos
              */
-            adapter= new DAOAdapter();
+            adapter = new DAOAdapter();
             System.out.println("idUser" + usuario.getIdUsuario());
             List<UsuarioAsignaturaTO> lista = adapter.ObtenerAsignaturaPorUsuario(usuario);
             PrintWriter out = response.getWriter();
@@ -161,7 +167,7 @@ public class Controller extends HttpServlet {
          */
         int id = Integer.parseInt(request.getParameter("id"));
         System.out.println(id);
-         adapter= new DAOAdapter();
+        adapter = new DAOAdapter();
         try {
             List<TemaTO> lista = adapter.obtenerTemasPorAsignatura(id);
             System.out.println("Servlet getTemas : " + lista);
@@ -185,8 +191,9 @@ public class Controller extends HttpServlet {
          * parametro un id =>request.getParametrer("id")
          */
         int id = Integer.parseInt(request.getParameter("id"));
+        contador = 0;
         System.out.println("IdTema : " + id);
-         adapter= new DAOAdapter();
+        adapter = new DAOAdapter();
         try {
             List<SubtemaTO> lista = adapter.obtenerSubtemasPorTema(id);
             System.out.println("servelt getSubTemas" + lista);
@@ -205,12 +212,14 @@ public class Controller extends HttpServlet {
          * =>request;getParametrer("id")
          */
         int id = Integer.parseInt(request.getParameter("id"));
+        
         System.out.println("IdSubTema : " + id);
         adapter = new DAOAdapter();
         try {
-             listaPreguntaTO = adapter.obtenerPreguntasAleatorias(id, 0);
+            listaPreguntaTO = adapter.obtenerPreguntasAleatorias(id, 0);
             System.out.println("servelt getPreguntas" + listaPreguntaTO);
-            request.setAttribute("lista", listaPreguntaTO);
+            request.setAttribute("lista", listaPreguntaTO.get(0));
+            request.setAttribute("contador",1);
             RequestDispatcher disp = request.getRequestDispatcher("/views/preguntas.jsp");
             disp.forward(request, response);
         } catch (IOException | ServletException ex) {
@@ -360,7 +369,7 @@ public class Controller extends HttpServlet {
 
     private void comprarMonedas(HttpServletRequest request, HttpServletResponse response) {
         try {
-            
+
             RequestDispatcher disp = request.getRequestDispatcher("/views/pasarela.jsp");
             disp.forward(request, response);
         } catch (IOException | ServletException ex) {
@@ -371,11 +380,12 @@ public class Controller extends HttpServlet {
     private void pagar(HttpServletRequest request, HttpServletResponse response) {
         String tipo = request.getParameter("tipo");
         double monto = Double.parseDouble(request.getParameter("monto"));
-        System.out.println("monto"+monto);
+        System.out.println("monto" + monto);
         StrategyFactory strategy = new StrategyFactory();
-        strategy.getStrategy(tipo).pay(monto,usuario);
+        strategy.getStrategy(tipo).pay(monto, usuario);
     }
-    private void getPreguntasErradas(HttpServletRequest request, HttpServletResponse response) {
+
+    private void getRespuesta(HttpServletRequest request, HttpServletResponse response) {
         String idPregunta = request.getParameter("idP");
         String clave = request.getParameter("c");
         int i = 0;
@@ -395,6 +405,18 @@ public class Controller extends HttpServlet {
             }
         } catch (IOException e) {
             System.out.println(e);
+        }
+    }
+
+    private void next(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            contador++;
+            request.setAttribute("lista", listaPreguntaTO.get(contador));
+            request.setAttribute("contador",contador+1);
+            RequestDispatcher disp = request.getRequestDispatcher("/views/preguntas.jsp");
+            disp.forward(request, response);
+        } catch (IOException | ServletException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

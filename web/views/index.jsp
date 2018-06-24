@@ -20,10 +20,19 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link href="../CSS/style.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <!-- jQuery library -->
         <script src="JQuery/jquery-3.1.1.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style type="text/css">
+            .rojo{
+                background-color: #ff3333;
+            }
+            .verde{
+                background-color: #00cc00;
+            }
+        </style>
         <script type="text/javascript">
             $(document).ready(function () {
                 $.get('Controller', {
@@ -31,19 +40,19 @@ and open the template in the editor.
                 }, function (response) {
                     // console.log(response);
                     $("#mostrarMonedas").empty().append(response);
-                }); 
+                });
                 $("#asignaturas").hover(function () {
                     getAsigaturas();
                 });
-                $("#ComprarMonedas").hover(function(){
-                   $.get('Controller', {
-                    instruccion: "getMonedas"
-                }, function (response) {
-                    // console.log(response);
-                    $("#mostrarMonedas").empty().append(response);
-                }); 
+                $("#ComprarMonedas").hover(function () {
+                    $.get('Controller', {
+                        instruccion: "getMonedas"
+                    }, function (response) {
+                        // console.log(response);
+                        $("#mostrarMonedas").empty().append(response);
+                    });
                 });
-                
+
                 function getAsigaturas() {
                     $.get('Controller', {
                         instruccion: "asignaturas"
@@ -65,24 +74,24 @@ and open the template in the editor.
                         bt.append(response);
                     });
                 });
-                
+
                 $("#tienda").click(function () {
                     listarArticulosTienda();
                 });
-                
+
                 $("#ComprarMonedas").click(function () {
                     $.get('Controller', {
                         instruccion: "comprarMonedas"
                     }, function (response) {
                         // console.log(response);
                         document.getElementById("modalHeaderTitulo").innerHTML = "Comprar Monedas";
-                         var bt = $("#modalBody");
-                         bt.empty().append(response);
+                        var bt = $("#modalBody");
+                        bt.empty().append(response);
                     });
                 });
 
             });
-            
+
             function openCourse(idCourse, nameCourse) {
                 //  document.getElementById("modalHeaderTitulo").value = nameCourse;                
                 // document.getElementById("modalHeaderTitulo").innerHTML = nameCourse;
@@ -169,20 +178,20 @@ and open the template in the editor.
                     // bt.append(response);
                 });
             }
-            function mostrar(tipo){
-                $("#"+tipo).slideToggle();
+            function mostrar(tipo) {
+                $("#" + tipo).slideToggle();
             }
-            function pagar(tipo){
-               let monto = $('input[name="valor"]:checked').val();
+            function pagar(tipo) {
+                let monto = $('input[name="valor"]:checked').val();
                 alert(monto);
-               $.get('Controller', {
+                $.get('Controller', {
                     instruccion: "pagar",
                     tipo: tipo,
                     monto: monto
                 }, function (response) {
                     // console.log(response);
                     alert(response);
-                     $("#"+tipo).hide();
+                    $("#" + tipo).hide();
                     // bt.empty();
                     // bt.append(response);
                 });
@@ -191,13 +200,32 @@ and open the template in the editor.
                 //console.log(idPregunta, clave);
                 var bt = $("#" + idPregunta);
                 $.get('Controller', {
-                    instruccion: "preguntasErradas",
+                    instruccion: "respuesta",
                     idP: idPregunta,
                     c: clave
+                }, function (response) {
+                    console.log(response); // aca recibe los temas de cada curso                    
+                    bt.empty();
+                    bt.append(response);
+                    if (response === "Correcta") {
+                        alert("entro");
+                        $("#enunciado").addClass("verde");
+                    } else {
+                        $("#enunciado").addClass("rojo");
+                    }
+                });
+
+                $("#btonSgt").slideToggle();
+            }
+            function siguiente() {
+                var bt = $("#modalBody");
+                $.get('Controller', {
+                    instruccion: "next"
                 }, function (response) {
                     //console.log(response); // aca recibe los temas de cada curso                    
                     bt.empty();
                     bt.append(response);
+                    bt.show("slow");
                 });
             }
         </script>
@@ -281,8 +309,8 @@ and open the template in the editor.
                         <p>Rueda de Preguntas</p>
                     </div>
                     <div class="modal-footer">
-                        <button id="modalFooterGuardar"type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
-                        <button id="modalFooterCerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <!-- <button id="modalFooterGuardar"type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>
+                         <button id="modalFooterCerrar" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button> -->
                     </div>
 
                 </div>

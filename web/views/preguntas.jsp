@@ -9,14 +9,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     PreguntaTO lista = (PreguntaTO) request.getAttribute("lista");
+    int i = (Integer)request.getAttribute("contador");
 %>
 <div class="">
-    <% int i=1;%>
-    <label id="<%= lista.getEnunciado()%>" class="w3-bar-item w3-button" onclick='alert("HOLA");'><%=i+")"  +  lista.getEnunciado()%></label><br>
-    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave1()%>"><%=i+")"  + lista.getClave1()%><br>
-    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave2()%>"><%=i+")"  + lista.getClave2()%><br>
-    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave3()%>"><%=i+")"  + lista.getClave3()%><br>
-    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave4()%>"><%=i+")"  +lista.getClave4()%><br>
-    <input type="radio" name="<%= lista.getEnunciado()%>" value="<%= lista.getClave5()%>"><%=i+")"  + lista.getClave5()%><br>
-    <%i++; }%>
+    <div id="enunciado"><label class="w3-bar-item w3-button"><%=i+") "+ lista.getEnunciado()%></label><span id='<%= lista.getIdPregunta()%>'></span></div><br>
+    <input type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 1)'value="<%= lista.getClave1()%>"><%=lista.getClave1()%> <br>
+    <input type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 2)' value="<%= lista.getClave2()%>"><%=lista.getClave2()%><br>
+    <input type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 3)' value="<%= lista.getClave3()%>"><%=lista.getClave3()%><br>
+    <input type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 4)' value="<%= lista.getClave4()%>"><%=lista.getClave4()%><br>
+    <input type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 5)' value="<%= lista.getClave5()%>"><%=lista.getClave5()%><br>
+    <label id="respuesta"></label>
+    <button onclick="siguiente()" style="display:none;" id="btonSgt">Siguiente</button>
 </div>
