@@ -16,4 +16,5 @@ public interface IAsignaturaDAO {
     public AsignaturaTO getAsignaturaById(Integer id_subtema);
     public List<AsignaturaTO> getAsignaturas();
     public int getTemasByAsignatura(int id_asignatura);
+     public AsignaturaTO getIDAsignaturaBytema(int idTema);
 }

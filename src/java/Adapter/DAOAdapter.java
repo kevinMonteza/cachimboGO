@@ -41,6 +41,16 @@ public class DAOAdapter implements DBAction{
         IArticuloDAO articuloDAO = DAOFactory.getInstance().getArticuloDAO();
         return articuloDAO.getArticulos();
     }
+    @Override
+    public int obtenerTemasporAsignatura(Integer id_asignatura){
+        IAsignaturaDAO asignatura = DAOFactory.getInstance().getAsignaturaDAO();
+        return asignatura.getTemasByAsignatura(id_asignatura);
+    }
+    @Override
+    public AsignaturaTO obtenerAsignaturaporTema(int id_tema){
+         IAsignaturaDAO asignatura = DAOFactory.getInstance().getAsignaturaDAO();
+        return  asignatura.getAsignaturaById(id_tema);
+    }
 
     @Override
     public ArticuloTO obtenerArticuloPorID(Integer id_articulo) {
@@ -244,6 +254,23 @@ public class DAOAdapter implements DBAction{
     public TemaTO obtenerTemaBysubtemid(int subtema) {
         ISubtemaDAO sub = DAOFactory.getInstance().getSubtemaDAO();
         return sub.getTemaBySubtema(subtema);
+    }
+    @Override
+    public boolean obtenerRespuesta(Integer id_usuario, Integer id_pregunta) {
+        IRespuestaDAO respuestaDAO = DAOFactory.getInstance().getRespuestaDAO();
+        return respuestaDAO.existsRespuesta(id_usuario, id_pregunta);
+    }
+
+    @Override
+    public int obtenerSubtemasporTema(UsuarioTemaTO usuarioT) {
+        IUsuarioSubtemaDAO subtemaDAO = DAOFactory.getInstance().getUsuarioSubtemaDAO();
+        return subtemaDAO.countSubtemasbyTemas(usuarioT);
+    }
+
+    @Override
+    public boolean exiteUSuarioTema(UsuarioTemaTO usuarioT) {
+        IUsuarioTemaDAO usuarioTemaDAO = DAOFactory.getInstance().getUsuarioTemaDAO();
+        return usuarioTemaDAO.existeUsuarioTema(usuarioT);
     }
     
 }

@@ -9,6 +9,7 @@ import Adapter.DAOAdapter;
 import dao.DAOFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ import strategy.StrategyFactory;
 import to.ArticuloTO;
 import to.AsignaturaTO;
 import to.PreguntaTO;
+import to.RespuestaTO;
 import to.SubtemaTO;
 import to.TemaTO;
 import to.UsuarioArticuloTO;
@@ -42,7 +44,8 @@ public class Controller extends HttpServlet {
     UsuarioTO usuario;
     List<AsignaturaTO> listaAsignaturas;
     List<PreguntaTO> listaPreguntaTO;
-    int contador = 0;
+    List<PreguntaTO> listaPreguntaTOEncoladas = new ArrayList<>();
+    int contador = 0, faltanResponder = 7;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -98,7 +101,9 @@ public class Controller extends HttpServlet {
             case "respuesta":
                 getRespuesta(request, response);
                 break;
-            case "next": next(request,response);break;
+            case "next":
+                next(request, response);
+                break;
         }
 
     }
@@ -212,14 +217,14 @@ public class Controller extends HttpServlet {
          * =>request;getParametrer("id")
          */
         int id = Integer.parseInt(request.getParameter("id"));
-        
+
         System.out.println("IdSubTema : " + id);
         adapter = new DAOAdapter();
         try {
             listaPreguntaTO = adapter.obtenerPreguntasAleatorias(id, 0);
             System.out.println("servelt getPreguntas" + listaPreguntaTO);
             request.setAttribute("lista", listaPreguntaTO.get(0));
-            request.setAttribute("contador",1);
+            request.setAttribute("contador", 1);
             RequestDispatcher disp = request.getRequestDispatcher("/views/preguntas.jsp");
             disp.forward(request, response);
         } catch (IOException | ServletException ex) {
@@ -385,6 +390,24 @@ public class Controller extends HttpServlet {
         strategy.getStrategy(tipo).pay(monto, usuario);
     }
 
+    private void acertoRespuesta(Integer acerto, String idPregunta) {
+        if (contador < 7) {
+            RespuestaTO res = new RespuestaTO();
+            res.setIdUsuario(usuario);
+            res.setIdPregunta(listaPreguntaTO.get(0));
+            res.setAcertada(acerto);
+            if (adapter.obtenerRespuesta(usuario.getIdUsuario(), Integer.parseInt(idPregunta))) {
+                System.out.println("Existe");
+                adapter.actualizarRespuesta(res);
+                System.out.println("ACTUALIZADO CON EXITO");
+            } else {
+                System.out.println("No Existe");
+                adapter.insertarRespuesta(res);
+                System.out.println("INSERTADO CON EXITO");
+            }
+        }
+    }
+
     private void getRespuesta(HttpServletRequest request, HttpServletResponse response) {
         String idPregunta = request.getParameter("idP");
         String clave = request.getParameter("c");
@@ -393,15 +416,26 @@ public class Controller extends HttpServlet {
             PrintWriter out = response.getWriter();
             for (PreguntaTO preguntaTO : listaPreguntaTO) {
                 if (preguntaTO.getIdPregunta().toString().equals(idPregunta) && preguntaTO.getCorrectaNum().toString().equals(clave)) {
+                    listaPreguntaTO.remove(0);
                     out.print("Correcta");
                     System.out.println("Correcta");
+                    acertoRespuesta(1, idPregunta);
                     i = 1;
                     break;
                 }
             }
             if (i == 0) {
+                acertoRespuesta(0, idPregunta);
                 out.print("La Cagaste");
                 System.out.println("La Cagaste");
+                listaPreguntaTO.add(listaPreguntaTO.get(0));
+                listaPreguntaTO.remove(0);
+                //listaPreguntaTOEncoladas.add(listaPreguntaTO.get(contador));
+                /*System.out.println("PREGUNTAS ENCOLADAS : \n");
+                for (PreguntaTO preguntaTO : listaPreguntaTOEncoladas) {
+                    System.out.println(preguntaTO.getEnunciado());
+                    System.out.println(preguntaTO.getCorrectaNum());
+                }*/
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -409,10 +443,22 @@ public class Controller extends HttpServlet {
     }
 
     private void next(HttpServletRequest request, HttpServletResponse response) {
+        /*System.out.println("PREGUNTAS : \n");
+        for (PreguntaTO preguntaTO : listaPreguntaTO) {
+            System.out.println(preguntaTO.getEnunciado());
+            System.out.println(preguntaTO.getCorrectaNum());
+        }*/
+
         try {
+            PrintWriter out = response.getWriter();
+            if (listaPreguntaTO.isEmpty()) {
+                out.print("fin");
+                return;
+            }
+            System.out.println(listaPreguntaTO.size());
             contador++;
-            request.setAttribute("lista", listaPreguntaTO.get(contador));
-            request.setAttribute("contador",contador+1);
+            request.setAttribute("lista", listaPreguntaTO.get(0));
+            request.setAttribute("contador", contador + 1);
             RequestDispatcher disp = request.getRequestDispatcher("/views/preguntas.jsp");
             disp.forward(request, response);
         } catch (IOException | ServletException ex) {

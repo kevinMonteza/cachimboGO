@@ -133,6 +133,7 @@ public class TemaDAO implements ITemaDAO {
 
     @Override
     public int getTemasCompletados(UsuarioAsignaturaTO usuarioA) {
+        
         try {
             String sql = "select count(*) from usuario_tema inner join usuario u on usuario_tema.id_usuario = u.id_usuario"
                     + "inner join usuario_asignatura a on u.id_usuario = a.id_usuario"

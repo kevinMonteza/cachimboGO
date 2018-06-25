@@ -5,8 +5,12 @@
  */
 package observer.componente;
 
+import Adapter.DAOAdapter;
+import Adapter.DBAction;
 import dao.DAOFactory;
 import observer.design.ObservadorEstadistica;
+import to.AsignaturaTO;
+import to.UsuarioAsignaturaTO;
 
 
 import to.UsuarioTemaTO;
@@ -20,9 +24,20 @@ public class EstadisticaAsignatura implements ObservadorEstadistica{
 
     @Override
     public void update(UsuarioTemaTO subtema) {
-        int temasT = DAOFactory.getInstance().getAsignaturaDAO().getTemasByAsignatura(subtema.getIdTema().getIdTema());
+        DBAction adapter = new DAOAdapter();
         
-//        int temasCompletos = DAOFactory.getInstance().getTemaDAO().getTemasCompletados(usuarioA);
+        AsignaturaTO id_asignatura = adapter.obtenerAsignaturaporTema(subtema.getIdTema().getIdTema());
+        
+        int temasT = adapter.obtenerTemasporAsignatura(id_asignatura.getIdAsignatura());
+        
+        UsuarioAsignaturaTO usuarioA = new UsuarioAsignaturaTO();
+        usuarioA.setIdAsignatura(id_asignatura);
+        usuarioA.setIdUsuario(subtema.getIdUsuario());
+        
+        int temasCompletos = DAOFactory.getInstance().getTemaDAO().getTemasCompletados(usuarioA);
+        double porcentaje = temasT*100/temasCompletos;
+        usuarioA.setPorcentaje(porcentaje);
+        adapter.actualizarUsuarioAsignatura(usuarioA);
         
     }
     

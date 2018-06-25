@@ -125,9 +125,10 @@ public class RespuestaDAO implements IRespuestaDAO {
     @Override
     public boolean updateRespuesta(RespuestaTO respuesta) {
         String sql = "update respuesta "
-                + "set acertada = ?"
-                + "where id_pregunta = ? and id_usuario = ?;";
+                + "set acertada = ? "
+                + "where id_pregunta = ? and id_usuario = ?";
         try {
+            String x = "";
             connection.setAutoCommit(false);
             st = connection.prepareStatement(sql);
             st.setInt(1, respuesta.getAcertada());
@@ -160,5 +161,45 @@ public class RespuestaDAO implements IRespuestaDAO {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean existsRespuesta(Integer id_usuario, Integer id_pregunta) {
+        String sql;
+        try {
+            sql = "select * from respuesta where id_usuario = ? and id_pregunta = ?;";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, id_usuario);
+            st.setInt(2, id_pregunta);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(RespuestaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(RespuestaDAO.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            return false;
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(RespuestaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(RespuestaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return false;
     }
 }

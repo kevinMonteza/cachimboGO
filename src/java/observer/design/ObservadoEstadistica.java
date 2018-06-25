@@ -6,6 +6,7 @@
 package observer.design;
 
 import Adapter.DAOAdapter;
+import Adapter.DBAction;
 import java.util.ArrayList;
 import java.util.List;
 import to.TemaTO;
@@ -18,7 +19,7 @@ import to.UsuarioTemaTO;
  */
 public abstract class ObservadoEstadistica {
     List<ObservadorEstadistica> lista = new ArrayList<>();
-    DAOAdapter adapter;
+    DBAction adapter;
      TemaTO tema ;
      UsuarioTemaTO usuarioT;
     
