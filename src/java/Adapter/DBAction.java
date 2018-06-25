@@ -36,6 +36,7 @@ public interface DBAction {
     public boolean insertarPregunta(PreguntaTO pregunta);
     public List<PreguntaTO> obtenerPreguntasAleatorias(Integer id_subtema, Integer tipo);
     public List<RespuestaTO> obtenerRespuestasPorSubtema(Integer id_subtema, Integer id_usuario);
+    public boolean obtenerRespuesta(Integer id_usuario, Integer id_pregunta);
     public boolean insertarRespuesta(RespuestaTO respuesta);
     public boolean actualizarRespuesta(RespuestaTO respuesta);
     public SubtemaTO obtenerSubtemaPorID(Integer id_subtema);

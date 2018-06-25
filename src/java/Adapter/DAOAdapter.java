@@ -239,5 +239,11 @@ public class DAOAdapter implements DBAction{
         IUsuarioTemaDAO usuarioTemaDAO = DAOFactory.getInstance().getUsuarioTemaDAO();
         return usuarioTemaDAO.updateUsuarioTema(usuarioTema);
     }
+
+    @Override
+    public boolean obtenerRespuesta(Integer id_usuario, Integer id_pregunta) {
+        IRespuestaDAO respuestaDAO = DAOFactory.getInstance().getRespuestaDAO();
+        return respuestaDAO.existsRespuesta(id_usuario, id_pregunta);
+    }
     
 }

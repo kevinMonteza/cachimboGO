@@ -120,7 +120,7 @@ and open the template in the editor.
                 //  document.getElementById("modalHeaderTitulo").innerHTML = nameTheme;
 
                 document.getElementById("buttonModalRuedaNormal").style.display = "none";
-                
+
                 cambiarContenido(nameTheme, "El conteido de este curso......");
 
                 //console.log("OpenTheme Parametro : ", idTheme);
@@ -141,7 +141,7 @@ and open the template in the editor.
                 document.getElementById("modalHeaderTitulo").innerHTML = nameSubTheme;
                 document.getElementById("modalHeaderTitulo").value = nameSubTheme;
                 document.getElementById("buttonModalRuedaNormal").style.display = "block";
-                
+
                 cambiarContenido(nameSubTheme, "El conteido de este curso......");
 
                 var bt = $("#modalBody");
@@ -201,8 +201,18 @@ and open the template in the editor.
                     // bt.append(response);
                 });
             }
+            function desabilitar() {
+                if (!document.getElementById("myRadio1").disabled) {
+                    document.getElementById("myRadio1").disabled = true;
+                    document.getElementById("myRadio2").disabled = true;
+                    document.getElementById("myRadio3").disabled = true;
+                    document.getElementById("myRadio4").disabled = true;
+                    document.getElementById("myRadio5").disabled = true;
+                }
+            }
             function radioEnviar(idPregunta, clave) {
-                //console.log(idPregunta, clave);
+                desabilitar();
+                //console.log(idPregunta, " - ", clave);
                 var bt = $("#" + idPregunta);
                 $.get('Controller', {
                     instruccion: "respuesta",
@@ -216,28 +226,31 @@ and open the template in the editor.
                     if (response === "Correcta") {
                         //alert("entro");
                         $("#enunciado").addClass("verde");
-                        $("#btonSgt").slideDown();
+                        //$("#btonSgt").slideDown();
                     }
                     if (response === "La Cagaste") {
                         $("#enunciado").addClass("rojo");
-                        $("#btonSgt").slideUp();
+                        //$("#btonSgt").slideUp();
                     }
+                    $("#btonSgt").slideDown();
                 });
 
             }
             function siguiente(i) {
-                if (i === 7) {
-                    cerrarModal();
-                    return false;
-                }
+
                 var bt = $("#modalBody");
                 $.get('Controller', {
                     instruccion: "next"
                 }, function (response) {
-                    //console.log(response); // aca recibe los temas de cada curso
-                    bt.empty();
-                    bt.append(response);
-                    bt.show("slow");
+                    if (response === "fin") {
+                        cerrarModal();
+                        return false;
+                    } else {
+                        //console.log(response); // aca recibe los temas de cada curso
+                        bt.empty();
+                        bt.append(response);
+                        bt.show("slow");
+                    }
                 });
             }
             function cerrarModal() {
