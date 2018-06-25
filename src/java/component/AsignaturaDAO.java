@@ -69,7 +69,7 @@ public class AsignaturaDAO implements IAsignaturaDAO {
             String sql = "select id_asignatura, nombre, id_tipo_asignatura from asignatura where id_tipo_asignatura=0;";
             st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 AsignaturaTO asignatura = new AsignaturaTO();
                 asignatura.setIdAsignatura(rs.getInt(1));
                 asignatura.setNombre(rs.getString(2));
@@ -90,5 +90,32 @@ public class AsignaturaDAO implements IAsignaturaDAO {
                 }
             }
         }
+    }
+
+    @Override
+    public int getTemasByAsignatura(int id_asignatura) {
+        String sql = "select count(*) from tema  where id_asignatura = ?;";
+        try {
+            st = connection.prepareStatement(sql);
+            st.setInt(1, id_asignatura);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AsignaturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AsignaturaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
     }
 }

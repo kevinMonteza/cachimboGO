@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import to.AsignaturaTO;
 import to.SubtemaTO;
 import to.TemaTO;
 
@@ -21,7 +22,8 @@ import to.TemaTO;
  *
  * @author isaac
  */
-public class SubtemaDAO implements ISubtemaDAO{
+public class SubtemaDAO implements ISubtemaDAO {
+
     private final Connection connection;
     private PreparedStatement st;
     private List<SubtemaTO> subtemas;
@@ -29,11 +31,12 @@ public class SubtemaDAO implements ISubtemaDAO{
     public SubtemaDAO(Connection connection) {
         this.connection = connection;
     }
+    
 
     @Override
     public SubtemaTO getSubtemaById(Integer id_subtema) {
         SubtemaTO subtema = new SubtemaTO();
-                try {
+        try {
             String sql = "select nombre, id_tema from subtema where id_subtema = ?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, id_subtema);
@@ -71,7 +74,7 @@ public class SubtemaDAO implements ISubtemaDAO{
             String sql = "select id_subtema, nombre, id_tema from subtema;";
             st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 TemaTO tema = new TemaTO();
                 SubtemaTO subtema = new SubtemaTO();
                 subtema.setIdSubtema(rs.getInt(1));
@@ -85,8 +88,7 @@ public class SubtemaDAO implements ISubtemaDAO{
         } catch (SQLException ex) {
             Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }
-        finally{
+        } finally {
             if (st != null) {
                 try {
                     st.close();
@@ -99,13 +101,13 @@ public class SubtemaDAO implements ISubtemaDAO{
 
     @Override
     public List<SubtemaTO> getSubtemasByTema(Integer id_tema) {
-                subtemas = new ArrayList<>();
+        subtemas = new ArrayList<>();
         try {
             String sql = "select id_subtema, nombre from subtema where id_tema = ?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, id_tema);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 TemaTO tema = new TemaTO();
                 SubtemaTO subtema = new SubtemaTO();
                 subtema.setIdSubtema(rs.getInt(1));
@@ -119,8 +121,7 @@ public class SubtemaDAO implements ISubtemaDAO{
         } catch (SQLException ex) {
             Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }
-        finally{
+        } finally {
             if (st != null) {
                 try {
                     st.close();
@@ -130,6 +131,39 @@ public class SubtemaDAO implements ISubtemaDAO{
             }
         }
     }
-    
-    
+
+    @Override
+    public TemaTO getTemaBySubtema(int id_subtema) {
+        try {
+            TemaTO tema = new TemaTO();
+            String sql = "select tema.id_tema,tema.nombre,tema.id_asignatura from tema inner join subtema s on tema.id_tema = s.id_tema where id_subtema= ?;";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, id_subtema);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                tema.setIdTema(rs.getInt(1));
+                tema.setNombre(rs.getString(2));
+                AsignaturaTO asignatura = new AsignaturaTO();
+                asignatura.setIdAsignatura(rs.getInt(3));
+                tema.setIdAsignatura(asignatura);
+                return tema;
+            } else {
+                rs.close();
+                return null;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(SubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
 }

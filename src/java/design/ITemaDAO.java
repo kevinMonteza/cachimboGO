@@ -7,6 +7,7 @@ package design;
 
 import java.util.List;
 import to.TemaTO;
+import to.UsuarioAsignaturaTO;
 
 /**
  *
@@ -16,4 +17,5 @@ public interface ITemaDAO {
     public TemaTO getTemaById(Integer id_tema);
     public List<TemaTO> getTemas();
     public List<TemaTO> getTemasByAsignatura(Integer id_asignatura);
+    public int getTemasCompletados(UsuarioAsignaturaTO usuarioA);
 }

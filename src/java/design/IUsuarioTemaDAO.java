@@ -17,4 +17,5 @@ public interface IUsuarioTemaDAO {
     public List<UsuarioTemaTO> getTemaByUsuario(UsuarioTO usuario);
     public boolean insertUsuarioTema(UsuarioTemaTO usuarioTema);
     public boolean updateUsuarioTema(UsuarioTemaTO usuarioTema);
+     public boolean existeUsuarioTema(UsuarioTemaTO usuarioT);
 }

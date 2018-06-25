@@ -22,13 +22,37 @@ import to.UsuarioTemaTO;
  *
  * @author isaac
  */
-public class UsuarioTemaDAO implements IUsuarioTemaDAO{
+public class UsuarioTemaDAO implements IUsuarioTemaDAO {
+
     private final Connection connection;
     private PreparedStatement st;
     private List<UsuarioTemaTO> usuarioTemas;
-    
-    public UsuarioTemaDAO(Connection connection){
+
+    public UsuarioTemaDAO(Connection connection) {
         this.connection = connection;
+    }
+
+    @Override
+    public boolean existeUsuarioTema(UsuarioTemaTO usuarioT) {
+        try {
+            String sql = "select count(*) from usuario_tema where id_tema = ? and id_usuario = ?;";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, usuarioT.getIdTema().getIdTema());
+            st.setInt(2, usuarioT.getIdUsuario().getIdUsuario());
+            ResultSet rs = st.executeQuery();
+            return rs.next();
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     @Override
@@ -42,7 +66,7 @@ public class UsuarioTemaDAO implements IUsuarioTemaDAO{
             st = connection.prepareStatement(sql);
             st.setInt(1, usuario.getIdUsuario());
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 TemaTO tema = new TemaTO();
                 UsuarioTemaTO usuarioTema = new UsuarioTemaTO();
                 usuarioTema.setIdUsuario(usuario);

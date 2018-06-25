@@ -96,10 +96,10 @@ and open the template in the editor.
                 //  document.getElementById("modalHeaderTitulo").value = nameCourse;                
                 // document.getElementById("modalHeaderTitulo").innerHTML = nameCourse;
 
-                document.getElementById("buttonModalRuedaNormal").style.display = "block";
+                document.getElementById("buttonModalRuedaNormal").style.display = "none";
 
                 var bt = $("#temasBoton");
-                console.log("OpenCourse Parametro : ", nameCourse);
+                //console.log("OpenCourse Parametro : ", nameCourse);
                 document.getElementById("temas").innerHTML = nameCourse;
                 $("#subtemas").empty();
                 document.getElementById("subtemas").innerHTML = "subtemas";
@@ -119,9 +119,11 @@ and open the template in the editor.
                 //  document.getElementById("modalHeaderTitulo").value = nameTheme;                
                 //  document.getElementById("modalHeaderTitulo").innerHTML = nameTheme;
 
-                document.getElementById("buttonModalRuedaNormal").style.display = "block";
+                document.getElementById("buttonModalRuedaNormal").style.display = "none";
+                
+                cambiarContenido(nameTheme, "El conteido de este curso......");
 
-                console.log("OpenTheme Parametro : ", idTheme);
+                //console.log("OpenTheme Parametro : ", idTheme);
                 document.getElementById("subtemas").innerHTML = nameTheme;
                 document.getElementById("subtemas").value = nameTheme;
                 var bt = $("#subTemasBoton");
@@ -137,14 +139,17 @@ and open the template in the editor.
             function openSubTheme(idSubTheme, nameSubTheme) {
                 //  document.getElementById("modalHeaderTitulo").value = nameSubTheme;                
                 document.getElementById("modalHeaderTitulo").innerHTML = nameSubTheme;
+                document.getElementById("modalHeaderTitulo").value = nameSubTheme;
                 document.getElementById("buttonModalRuedaNormal").style.display = "block";
+                
+                cambiarContenido(nameSubTheme, "El conteido de este curso......");
 
                 var bt = $("#modalBody");
                 $.get('Controller', {
                     instruccion: "preguntas",
                     id: idSubTheme
                 }, function (response) {
-                    console.log(response); // aca recibe los temas de cada curso                    
+                    //console.log(response); // aca recibe los temas de cada curso                    
                     bt.empty();
                     bt.append(response);
                 });
@@ -155,7 +160,7 @@ and open the template in the editor.
                 $.get('Controller', {
                     instruccion: "tienda"
                 }, function (response) {
-                    console.log(response); // aca recibe los temas de cada curso                    
+                    //console.log(response); // aca recibe los temas de cada curso                    
                     bt.empty();
                     bt.append(response);
                 });
@@ -204,29 +209,42 @@ and open the template in the editor.
                     idP: idPregunta,
                     c: clave
                 }, function (response) {
-                    console.log(response); // aca recibe los temas de cada curso                    
+                    //console.log(response); // aca recibe los temas de cada curso                    
                     bt.empty();
                     bt.append(response);
+                    $("#enunciado").removeClass();
                     if (response === "Correcta") {
-                        alert("entro");
+                        //alert("entro");
                         $("#enunciado").addClass("verde");
-                    } else {
+                        $("#btonSgt").slideDown();
+                    }
+                    if (response === "La Cagaste") {
                         $("#enunciado").addClass("rojo");
+                        $("#btonSgt").slideUp();
                     }
                 });
 
-                $("#btonSgt").slideToggle();
             }
-            function siguiente() {
+            function siguiente(i) {
+                if (i === 7) {
+                    cerrarModal();
+                    return false;
+                }
                 var bt = $("#modalBody");
                 $.get('Controller', {
                     instruccion: "next"
                 }, function (response) {
-                    //console.log(response); // aca recibe los temas de cada curso                    
+                    //console.log(response); // aca recibe los temas de cada curso
                     bt.empty();
                     bt.append(response);
                     bt.show("slow");
                 });
+            }
+            function cerrarModal() {
+                $("#myModal").modal('hide');
+                document.getElementById("buttonModalRuedaNormal").style.display = "none";
+                document.getElementById("contenido").innerHTML = "Felicidades, terminaste este contenido satisfactoriamente";
+                document.getElementById("contenido").style.display = "block";
             }
         </script>
 
@@ -289,7 +307,7 @@ and open the template in the editor.
             <div>
                 <h2 id="titulo">Bienvenidos</h2>
                 <p id="contenido">---</p>
-                <button id="buttonModalRuedaNormal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="ruedaNormal()">Nueva Rueda</button>
+                <button id="buttonModalRuedaNormal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="ruedaNormal()" style="display : none;">Nueva Rueda</button>
             </div>
 
         </div>
@@ -302,7 +320,7 @@ and open the template in the editor.
                 <!-- Modal content-->
                 <div id="modalContent" class="modal-content">
                     <div id="modalHeader" class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button id="cerrarModal" type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 id="modalHeaderTitulo" class="modal-title" value="">Rueda de Preguntas</h4>
                     </div>
                     <div id="modalBody" class="modal-body">

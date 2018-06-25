@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import to.SubtemaTO;
 import to.UsuarioSubtemaTO;
 import to.UsuarioTO;
+import to.UsuarioTemaTO;
 
 /**
  *
@@ -30,6 +31,35 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
 
     public UsuarioSubtemaDAO(Connection connection) {
         this.connection = connection;
+    }
+
+    @Override
+    public int countSubtemasbyTemas(UsuarioTemaTO usuarioT) {
+        try {
+            String sql = "select count(*) from usuario_subtema"
+                    + "  inner join subtema s on usuario_subtema.id_subtema = s.id_subtema"
+                    + "  inner join tema t on s.id_tema = t.id_tema where s.id_tema=? and id_usuario=? and completado=1;";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, usuarioT.getIdTema().getIdTema());
+            st.setInt(1,usuarioT.getIdUsuario().getIdUsuario());
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }else{
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioSubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        } finally {
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioSubtemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     @Override
@@ -151,4 +181,3 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
         }
     }
 }
-

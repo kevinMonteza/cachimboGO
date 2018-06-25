@@ -8,6 +8,7 @@ package design;
 import java.util.List;
 import to.UsuarioSubtemaTO;
 import to.UsuarioTO;
+import to.UsuarioTemaTO;
 
 /**
  *
@@ -17,4 +18,5 @@ public interface IUsuarioSubtemaDAO {
     public List<UsuarioSubtemaTO> getSubtemaByUsuario(UsuarioTO usuario);
     public boolean insertUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema);
     public boolean updateUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema);
+    public int countSubtemasbyTemas(UsuarioTemaTO usuarioT);
 }

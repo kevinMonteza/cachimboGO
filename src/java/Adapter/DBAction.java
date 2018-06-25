@@ -57,4 +57,5 @@ public interface DBAction {
     public List<UsuarioTemaTO> obtenerTemaPorUsuario(UsuarioTO usuario);
     public boolean insertarUsuarioTema(UsuarioTemaTO usuarioTema);
     public boolean actualizarUsuarioTema(UsuarioTemaTO usuarioTema);
+    public TemaTO obtenerTemaBysubtemid(int subtema);
 }
