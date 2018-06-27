@@ -13,7 +13,6 @@ public class SubtemaTO {
     private Integer id_subtema;
     private String nombre;
     private TemaTO id_tema;
-
     /**
      * @return the id_subtema
      */

@@ -30,6 +30,7 @@ import to.TemaTO;
 import to.UsuarioArticuloTO;
 import to.UsuarioAsignaturaTO;
 import to.UsuarioTO;
+import to.UsuarioTemaTO;
 
 /**
  *
@@ -57,8 +58,6 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-  
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -162,7 +161,7 @@ public class Controller extends HttpServlet {
             System.out.println("esta en el servlet getAsiganturas" + lista);
             out.println("<table>");
             lista.forEach((a) -> {
-                out.println("<tr><td><button id='" + a.getIdAsignatura().getNombre() + "' class='w3-bar-item w3-button' onclick='openCourse(" + a.getIdAsignatura().getIdAsignatura() + ", this.id)'>" + a.getIdAsignatura().getNombre()+ "</button></td><td>"+ "<span style='margin:4.4em;'>"+a.getPorcentaje() + "%</span></td></tr>");
+                out.println("<tr><td><button id='" + a.getIdAsignatura().getNombre() + "' class='w3-bar-item w3-button' onclick='openCourse(" + a.getIdAsignatura().getIdAsignatura() + ", this.id)'>" + a.getIdAsignatura().getNombre() + "</button></td><td>" + "<span style='margin:4.4em;'>" + a.getPorcentaje() + "%</span></td></tr>");
             });
             out.print("</table>");
         } catch (IOException ex) {
@@ -180,8 +179,10 @@ public class Controller extends HttpServlet {
         adapter = new DAOAdapter();
         try {
             List<TemaTO> lista = adapter.obtenerTemasPorAsignatura(id);
+            List<UsuarioTemaTO> listaU = adapter.obtenerTemaPorUsuario(usuario);
             System.out.println("Servlet getTemas : " + lista);
             request.setAttribute("lista", lista);
+            request.setAttribute("listaU", listaU);
             RequestDispatcher disp = request.getRequestDispatcher("/views/temas.jsp");
             disp.forward(request, response);
             // PrintWriter out = response.getWriter();
@@ -202,11 +203,12 @@ public class Controller extends HttpServlet {
          */
         int id = Integer.parseInt(request.getParameter("id"));
         contador = 0;
-        fallo = false;
+        fallo = true;
         System.out.println("IdTema : " + id);
         adapter = new DAOAdapter();
         try {
             List<SubtemaTO> lista = adapter.obtenerSubtemasPorTema(id);
+
             System.out.println("servelt getSubTemas" + lista);
             request.setAttribute("lista", lista);
             RequestDispatcher disp = request.getRequestDispatcher("/views/subTemas.jsp");
@@ -412,7 +414,7 @@ public class Controller extends HttpServlet {
                 System.out.println("INSERTADO CON EXITO");
             }
         }
-     
+
     }
 
     private void getRespuesta(HttpServletRequest request, HttpServletResponse response) {
@@ -432,6 +434,7 @@ public class Controller extends HttpServlet {
                 }
             }
             if (i == 0) {
+                fallo = false;
                 acertoRespuesta(0, idPregunta);
                 out.print("La Cagaste");
                 System.out.println("La Cagaste");
@@ -447,6 +450,9 @@ public class Controller extends HttpServlet {
         try {
             PrintWriter out = response.getWriter();
             if (listaPreguntaTO.isEmpty()) {
+                if(fallo){
+                    
+                }
                 out.print("fin");
                 return;
             }

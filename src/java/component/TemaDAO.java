@@ -27,6 +27,7 @@ public class TemaDAO implements ITemaDAO {
     private final Connection connection;
     private PreparedStatement st;
     private List<TemaTO> temas;
+  
 
     public TemaDAO(Connection connection) {
         this.connection = connection;
@@ -101,7 +102,7 @@ public class TemaDAO implements ITemaDAO {
     public List<TemaTO> getTemasByAsignatura(Integer id_asignatura) {
         temas = new ArrayList<>();
         try {
-            String sql = "select t.id_tema, t.nombre, u.porcentaje  from tema t inner join usuario_tema u on t.id_tema = u.id_tema where t.id_asignatura = ?;";
+            String sql = "select * from tema where id_asignatura=?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, id_asignatura);
             ResultSet rs = st.executeQuery();
@@ -112,7 +113,6 @@ public class TemaDAO implements ITemaDAO {
                 tema.setIdAsignatura(asignatura);
                 tema.setIdTema(rs.getInt(1));
                 tema.setNombre(rs.getString(2));
-                tema.setPorcentaje(rs.getDouble(3));
                 temas.add(tema);
             }
             rs.close();
@@ -134,7 +134,7 @@ public class TemaDAO implements ITemaDAO {
 
     @Override
     public int getTemasCompletados(UsuarioAsignaturaTO usuarioA) {
-        
+
         try {
             String sql = "select count(*) from usuario_tema inner join usuario u on usuario_tema.id_usuario = u.id_usuario"
                     + "inner join usuario_asignatura a on u.id_usuario = a.id_usuario"

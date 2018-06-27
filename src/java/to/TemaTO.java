@@ -13,13 +13,22 @@ public class TemaTO {
     private Integer id_tema;
     private String nombre;
     private AsignaturaTO id_asignatura;
-    private Double porcentaje;
-
+      private double porcentaje;
     /**
      * @return the id_tema
      */
     public Integer getIdTema() {
         return id_tema;
+    }
+    public double getPorcentaje() {
+        return porcentaje;
+    }
+
+    /**
+     * @param porcentaje the porcentaje to set
+     */
+    public void setPorcentaje(double porcentaje) {
+        this.porcentaje = porcentaje;
     }
 
     /**
@@ -60,14 +69,5 @@ public class TemaTO {
     /**
      * @return the porcentaje
      */
-    public Double getPorcentaje() {
-        return porcentaje;
-    }
-
-    /**
-     * @param porcentaje the porcentaje to set
-     */
-    public void setPorcentaje(Double porcentaje) {
-        this.porcentaje = porcentaje;
-    }
+    
 }

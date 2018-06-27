@@ -58,6 +58,7 @@ public class UsuarioTemaDAO implements IUsuarioTemaDAO {
     @Override
     public List<UsuarioTemaTO> getTemaByUsuario(UsuarioTO usuario) {
         usuarioTemas = new ArrayList<>();
+        System.out.println("idUsuario"+usuario.getIdUsuario());
         try {
             String sql = "select T.id_tema, UT.porcentaje, T.nombre "
                     + "from usuario_tema as UT "
@@ -70,10 +71,10 @@ public class UsuarioTemaDAO implements IUsuarioTemaDAO {
                 TemaTO tema = new TemaTO();
                 UsuarioTemaTO usuarioTema = new UsuarioTemaTO();
                 usuarioTema.setIdUsuario(usuario);
-                tema.setIdTema(rs.getInt(2));
-                tema.setNombre(rs.getString(4));
+                tema.setIdTema(rs.getInt(1));
+                tema.setNombre(rs.getString(3));
                 usuarioTema.setIdTema(tema);
-                usuarioTema.setPorcentaje(rs.getDouble(3));
+                usuarioTema.setPorcentaje(rs.getDouble(2));
                 usuarioTemas.add(usuarioTema);
             }
             rs.close();
