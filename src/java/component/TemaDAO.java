@@ -101,7 +101,7 @@ public class TemaDAO implements ITemaDAO {
     public List<TemaTO> getTemasByAsignatura(Integer id_asignatura) {
         temas = new ArrayList<>();
         try {
-            String sql = "select * from tema where id_asignatura = ?;";
+            String sql = "select t.id_tema, t.nombre, u.porcentaje  from tema t inner join usuario_tema u on t.id_tema = u.id_tema where t.id_asignatura = ?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, id_asignatura);
             ResultSet rs = st.executeQuery();
@@ -112,6 +112,7 @@ public class TemaDAO implements ITemaDAO {
                 tema.setIdAsignatura(asignatura);
                 tema.setIdTema(rs.getInt(1));
                 tema.setNombre(rs.getString(2));
+                tema.setPorcentaje(rs.getDouble(3));
                 temas.add(tema);
             }
             rs.close();

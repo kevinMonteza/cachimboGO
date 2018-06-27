@@ -6,6 +6,7 @@
 package servlet;
 
 import Adapter.DAOAdapter;
+import Adapter.DBAction;
 import dao.DAOFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,12 +41,12 @@ import to.UsuarioTO;
 public class Controller extends HttpServlet {
 
     Dispacher dispacher;
-    DAOAdapter adapter;
+    DBAction adapter;
     UsuarioTO usuario;
     List<AsignaturaTO> listaAsignaturas;
     List<PreguntaTO> listaPreguntaTO;
-    List<PreguntaTO> listaPreguntaTOEncoladas = new ArrayList<>();
-    int contador = 0, faltanResponder = 7;
+    int contador = 0;
+    boolean fallo;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -56,6 +57,8 @@ public class Controller extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+  
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -157,9 +160,11 @@ public class Controller extends HttpServlet {
             List<UsuarioAsignaturaTO> lista = adapter.ObtenerAsignaturaPorUsuario(usuario);
             PrintWriter out = response.getWriter();
             System.out.println("esta en el servlet getAsiganturas" + lista);
+            out.println("<table>");
             lista.forEach((a) -> {
-                out.println("<button id='" + a.getIdAsignatura().getNombre() + "' class='w3-bar-item w3-button' onclick='openCourse(" + a.getIdAsignatura().getIdAsignatura() + ", this.id)'>" + a.getIdAsignatura().getNombre() + "</button>");
+                out.println("<tr><td><button id='" + a.getIdAsignatura().getNombre() + "' class='w3-bar-item w3-button' onclick='openCourse(" + a.getIdAsignatura().getIdAsignatura() + ", this.id)'>" + a.getIdAsignatura().getNombre()+ "</button></td><td>"+ "<span style='margin:4.4em;'>"+a.getPorcentaje() + "%</span></td></tr>");
             });
+            out.print("</table>");
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -197,6 +202,7 @@ public class Controller extends HttpServlet {
          */
         int id = Integer.parseInt(request.getParameter("id"));
         contador = 0;
+        fallo = false;
         System.out.println("IdTema : " + id);
         adapter = new DAOAdapter();
         try {
@@ -406,6 +412,7 @@ public class Controller extends HttpServlet {
                 System.out.println("INSERTADO CON EXITO");
             }
         }
+     
     }
 
     private void getRespuesta(HttpServletRequest request, HttpServletResponse response) {
@@ -430,12 +437,6 @@ public class Controller extends HttpServlet {
                 System.out.println("La Cagaste");
                 listaPreguntaTO.add(listaPreguntaTO.get(0));
                 listaPreguntaTO.remove(0);
-                //listaPreguntaTOEncoladas.add(listaPreguntaTO.get(contador));
-                /*System.out.println("PREGUNTAS ENCOLADAS : \n");
-                for (PreguntaTO preguntaTO : listaPreguntaTOEncoladas) {
-                    System.out.println(preguntaTO.getEnunciado());
-                    System.out.println(preguntaTO.getCorrectaNum());
-                }*/
             }
         } catch (IOException e) {
             System.out.println(e);
@@ -443,12 +444,6 @@ public class Controller extends HttpServlet {
     }
 
     private void next(HttpServletRequest request, HttpServletResponse response) {
-        /*System.out.println("PREGUNTAS : \n");
-        for (PreguntaTO preguntaTO : listaPreguntaTO) {
-            System.out.println(preguntaTO.getEnunciado());
-            System.out.println(preguntaTO.getCorrectaNum());
-        }*/
-
         try {
             PrintWriter out = response.getWriter();
             if (listaPreguntaTO.isEmpty()) {

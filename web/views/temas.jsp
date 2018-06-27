@@ -11,7 +11,13 @@
     List<TemaTO> lista = (List<TemaTO>) request.getAttribute("lista");
 %>
 <div class="">
+    <table>
     <%for (TemaTO tema : lista) {%>
-    <button id="<%= tema.getNombre()%>" class="w3-bar-item w3-button" onclick='openTheme("<%= tema.getIdTema()%>",this.id )'><%= tema.getNombre()%></button>    
+    <tr>
+        <td><button id="<%= tema.getNombre()%>" class="w3-bar-item w3-button" onclick='openTheme("<%= tema.getIdTema()%>",this.id )'><%= tema.getNombre()%></button></td>
+        <td><span><%=tema.getPorcentaje()%> %</span></td>
+    </tr>
+         
     <%}%>
+    </table>
 </div>
