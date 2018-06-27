@@ -22,7 +22,8 @@ function data(nombre) {
         case "Educación Cívica":
             respuesta = "La educación cívica,es un tipo de educación dirigida a las relaciones sociales que busca fortalecer los espacios de convivencia social entre las personas; también enseña la solidaridad y la cooperación, la convivencia social ya sea dentro del plantel educativo o en la sociedad.";
             break;
-        case "Álgebra": respuesta="El álgebra se define como aquella rama de las matemáticas encargada de estudiar los números y las propiedades de los mismos.";
+        case "Álgebra":
+            respuesta = "El álgebra se define como aquella rama de las matemáticas encargada de estudiar los números y las propiedades de los mismos.";
             break;
     }
     return respuesta;
@@ -257,9 +258,31 @@ function siguiente(i) {
 }
 function mostrarResumen() {
     $("#modalBody").empty();
-    console.log(obj);
+    for (i in obj) {
+        let node = document.createElement("LABEL");
+        let nodeL = document.createElement("LABEL");
+        let br = document.createElement("BR");
+        let textnodeL;
+        if (obj[i] === "correcta") {
+            textnodeL = document.createTextNode("correcta");
+            nodeL.className = "verde";
+        } else {
+            textnodeL = document.createTextNode("incorrecta");
+            nodeL.className = "rojo";
+        }
+        let textnode = document.createTextNode(i);
+        nodeL.appendChild(textnodeL);
+        node.appendChild(textnode);
+        document.getElementById("modalBody").appendChild(node);
+        document.getElementById("modalBody").appendChild(nodeL);
+        document.getElementById("modalBody").appendChild(br);
 
+        //console.log(i, obj[i]);
+    }
+    setTimeout(cerrarModal, 3000);
 }
+
+
 function cerrarModal() {
     $("#myModal").modal('hide');
     document.getElementById("buttonModalRuedaNormal").style.display = "none";

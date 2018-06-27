@@ -34,7 +34,12 @@ and open the template in the editor.
             .verde{
                 background-color: #00cc00;
             }
+            body{
+                background-color: #ffc885;
+            }
         </style>
+
+
     </head>
 
     <!-- 
@@ -46,13 +51,12 @@ and open the template in the editor.
     Clicked Button : https://stackoverflow.com/questions/10291017/how-to-get-id-of-button-user-just-clicked
     -->
     <body>  
-        <div class="w3-container">
-            <h2>Patrones de Diseño</h2>
-            <p id="algo">welcome</p>
+        <div class="">
+            <image src="img/fondo.png" style="width: 100%; height: 200px;"/>
         </div>
-        <div id="headerBar" class="w3-bar w3-grey w3-card-4">
+        <div id="headerBar" class="w3-bar w3-green w3-card-4" style="background-color:#00ffff;">
             <div class="w3-dropdown-hover">
-                <button type="button" class="w3-button w3-border-right" id="inicio">Inicio</button>
+                <button type="button" class="w3-button w3-border-right w3-green" id="inicio">Inicio</button>
                 <div class="w3-dropdown-content w3-bar-block w3-card-4" id="subMenuInicio">
                     <button class="w3-bar-item w3-button" id="perfil" data-toggle="modal" data-target="#myModal">Perfil</button>
                     <button class="w3-bar-item w3-button" data-toggle="modal" data-target="#myModal" id="tienda">Tienda</button>
@@ -78,7 +82,7 @@ and open the template in the editor.
             </div>
             <div style="float: right;">
                 <input type="text" class="w3-bar-item w3-input" placeholder="Search..">
-                <a href="#" class="w3-bar-item w3-button w3-grey w3-border-right">Go</a>                
+                <a href="#" class="w3-bar-item w3-button w3-green w3-border-right">Go</a>                
             </div> 
         </div>
 
