@@ -24,14 +24,16 @@ public class EstadisticaTema implements ObservadorEstadistica {
     public void update(UsuarioTemaTO usuTema) {
         System.out.println("update tema");
         List<SubtemaTO> lista = adapter.obtenerSubtemasPorTema(usuTema.getIdTema().getIdTema());
-        
+        System.out.println("nro de subtemas por tema"+lista.size());
         int cant = adapter.obtenerSubtemasporTema(usuTema);
-        
+        System.out.println("usuario temas"+cant);
         double porcentaje = cant * 100 / lista.size();
         usuTema.setPorcentaje(porcentaje);
         if (adapter.exiteUSuarioTema(usuTema)) {
+            System.out.println("actualiza usuario tema");
             adapter.actualizarUsuarioTema(usuTema);
         } else {
+            System.out.println("inserta suario tema");
             adapter.insertarUsuarioTema(usuTema);
         }
     }

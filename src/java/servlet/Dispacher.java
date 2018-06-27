@@ -48,7 +48,7 @@ public class Dispacher implements Servlet {
         String view = "/views/index.jsp";
         String viewFalse="/views/fallo.jsp";
         UsuarioTO usuario= new UsuarioTO();
-        usuario.setUsuario(upass);
+        usuario.setUsuario(uname);
         usuario.setPassword(upass);
         
         HttpSession session = null;

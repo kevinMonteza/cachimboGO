@@ -35,7 +35,11 @@ and open the template in the editor.
                 background-color: #00cc00;
             }
             body{
-                background-color: #ffc885;
+                background-color:white;
+            }
+            #botones{
+                width: 240px;
+                float: right;
             }
         </style>
 
@@ -87,21 +91,29 @@ and open the template in the editor.
         </div>
 
 
-        <div id="inicio" class="w3-panel w3-leftbar w3-sand w3-xxlarge w3-serif inicio">
-            <div class="w3-panel">
-                <button id="tienda" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="listarArticulosTienda()"><spam>Tienda</spam></button>
+        <div id="inicio" class="w3-panel w3-leftbar w3-pale-green w3-xxlarge w3-serif inicio">
+            <div id='botones'>
+                <div class="w3-panel">
+                    <button id="tienda" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="listarArticulosTienda()"><spam class='glyphicon glyphicon-shopping-cart'> Tienda</spam></button>
+                </div>
+                <div class="w3-panel">
+                    <button id="ComprarMonedas" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" title="Comprar">Monedas:  <spam id="mostrarMonedas" style="font-family:Courier New;" >  </spam><span class='glyphicon glyphicon-bitcoin'></span></button>
+                </div>
+
             </div>
-            <div class="w3-panel">
-                <button id="ComprarMonedas" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" title="Comprar">Monedas:  <spam id="mostrarMonedas" style="font-family:Courier New;"></spam></button>
-            </div>
+
 
             <div>
                 <h2 id="titulo">Bienvenidos</h2>
-                <p id="contenido">---</p>
+                <p id="contenido"  ALIGN="center">---</p>
                 <button id="buttonModalRuedaNormal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="ruedaNormal()" style="display : none;">Nueva Rueda</button>
             </div>
-
+           
         </div>
+         <div id='help' style='none'>
+                
+            </div>
+
 
 
         <!-- Modal -->
@@ -116,6 +128,9 @@ and open the template in the editor.
                     </div>
                     <div id="modalBody" class="modal-body">
                         <p>Rueda de Preguntas</p>
+                        <div id='respuesta'>
+                            
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <!-- <button id="modalFooterGuardar"type="button" class="btn btn-default" data-dismiss="modal">Guardar</button>

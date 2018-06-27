@@ -40,7 +40,8 @@ public class UsuarioTemaDAO implements IUsuarioTemaDAO {
             st.setInt(1, usuarioT.getIdTema().getIdTema());
             st.setInt(2, usuarioT.getIdUsuario().getIdUsuario());
             ResultSet rs = st.executeQuery();
-            return rs.next();
+            rs.next();
+            return rs.getInt(1)!=0;
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;

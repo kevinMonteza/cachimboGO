@@ -233,6 +233,15 @@ function radioEnviar(idPregunta, clave) {
             $("#enunciado").addClass("rojo");
             //$("#btonSgt").slideUp();
         }
+        $.get('Controller', {
+            instruccion: "info"
+        }, function (response) {
+            if(response){
+             console.log(response);
+             $("#respuesta").empty();
+             $("#respuesta").append(response);
+            }
+        });
         $("#btonSgt").slideDown();
     });
 
@@ -258,7 +267,7 @@ function siguiente(i) {
 }
 function mostrarResumen() {
     $("#modalBody").empty();
-    for (i in obj) {
+    for (var i in obj) {
         let node = document.createElement("LABEL");
         let nodeL = document.createElement("LABEL");
         let br = document.createElement("BR");

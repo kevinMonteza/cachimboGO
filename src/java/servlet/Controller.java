@@ -49,6 +49,7 @@ public class Controller extends HttpServlet {
     Dispacher dispacher;
     DBAction adapter;
     UsuarioTO usuario;
+     String respuesta="";
     ObservadoEstadistica subTemaObservado;
     List<AsignaturaTO> listaAsignaturas;
     List<PreguntaTO> listaPreguntaTO;
@@ -112,6 +113,9 @@ public class Controller extends HttpServlet {
                 break;
             case "next":
                 next(request, response);
+                break;
+            case "info":
+                getInformacion(request,response);
                 break;
         }
 
@@ -439,10 +443,14 @@ public class Controller extends HttpServlet {
                 if (preguntaTO.getIdPregunta().toString().equals(idPregunta) && preguntaTO.getCorrectaNum().toString().equals(clave)) {
                     if(listaPreguntaTO.size()==1){
                        acertoRespuesta(1, idPregunta);
+                       respuesta = preguntaTO.getInformacion();
+                        System.out.println("Informacion respuesta"+respuesta);
                        listaPreguntaTO.remove(0);
                         i = 1;
                        break;
                     }
+                     respuesta = preguntaTO.getInformacion();
+                    System.out.println("Informacion respuesta"+respuesta);
                     listaPreguntaTO.remove(0);
                     System.out.println("En el if ");
                     out.print("Correcta");
@@ -493,6 +501,16 @@ public class Controller extends HttpServlet {
             RequestDispatcher disp = request.getRequestDispatcher("/views/preguntas.jsp");
             disp.forward(request, response);
         } catch (IOException | ServletException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void getInformacion(HttpServletRequest request, HttpServletResponse response) {
+       
+        try {
+            PrintWriter out = response.getWriter();
+            out.print(respuesta);
+        } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
