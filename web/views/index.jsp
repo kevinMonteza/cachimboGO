@@ -226,19 +226,23 @@ and open the template in the editor.
                     bt.append(response);
                     $("#enunciado").removeClass();
                     if (response === "Correcta") {
-                        obj[val]="correcta";
+                        if (Object.keys(obj).length < 8) {
+                            obj[val] = "correcta";
+                        }
                         //alert("entro");
                         $("#enunciado").addClass("verde");
                         //$("#btonSgt").slideDown();
                     }
                     if (response === "Incorrecta") {
-                        obj[val]="incorrecta";
+                        if (Object.keys(obj).length < 8) {
+                            obj[val] = "incorrecta";
+                        }
                         $("#enunciado").addClass("rojo");
                         //$("#btonSgt").slideUp();
                     }
                     $("#btonSgt").slideDown();
                 });
-
+                //console.log(obj);
             }
 
             function siguiente(i) {
@@ -249,7 +253,7 @@ and open the template in the editor.
                 }, function (response) {
                     if (response === "fin") {
                         mostrarResumen();
-                       // cerrarModal();
+                        // cerrarModal();
                         return false;
                     } else {
                         //console.log(response); // aca recibe los temas de cada curso
@@ -259,12 +263,32 @@ and open the template in the editor.
                     }
                 });
             }
-            function mostrarResumen(){
-                 $("#modalBody").empty();
-                    console.log(obj);
-                
+            function mostrarResumen() {
+                $("#modalBody").empty();
+                for (i in obj) {
+                    let node = document.createElement("LABEL");
+                    let nodeL = document.createElement("LABEL");
+                    let br = document.createElement("BR");
+                    let textnodeL;
+                    if(obj[i] === "correcta"){
+                        textnodeL = document.createTextNode("correcta");
+                        nodeL.className = "verde";
+                    }else{
+                        textnodeL = document.createTextNode("incorrecta");
+                        nodeL.className = "rojo";
+                    }                    
+                    let textnode = document.createTextNode(i);
+                    nodeL.appendChild(textnodeL);
+                    node.appendChild(textnode);
+                    document.getElementById("modalBody").appendChild(node);
+                    document.getElementById("modalBody").appendChild(nodeL);
+                    document.getElementById("modalBody").appendChild(br);
+                    
+                    //console.log(i, obj[i]);
+                }
+                setTimeout(cerrarModal, 3000);
             }
-            function cerrarModal() {
+            function cerrarModal() {                
                 $("#myModal").modal('hide');
                 document.getElementById("buttonModalRuedaNormal").style.display = "none";
                 document.getElementById("contenido").innerHTML = "Felicidades, terminaste este contenido satisfactoriamente";

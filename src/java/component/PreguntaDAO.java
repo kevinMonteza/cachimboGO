@@ -6,6 +6,7 @@
 package component;
 
 import design.IPreguntaDAO;
+import facade.FachadaPregunta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,6 +30,7 @@ public class PreguntaDAO implements IPreguntaDAO {
     private Connection connection;
     private PreparedStatement st;
     private List<PreguntaTO> preguntas;
+    FachadaPregunta fachada = null;
 
     public PreguntaDAO(Connection connection) {
         this.connection = connection;
@@ -46,28 +48,8 @@ public class PreguntaDAO implements IPreguntaDAO {
             st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                PreguntaTO pregunta = new PreguntaTO();
-                SubtemaTO subtema = new SubtemaTO();
-                TipoPreguntaTO tp = new TipoPreguntaTO();
-                DificultadTO dificultad = new DificultadTO();
-                pregunta.setIdPregunta(rs.getInt(1));
-                pregunta.setEnunciado(rs.getString(2));
-                pregunta.setClave1(rs.getString(3));
-                pregunta.setClave2(rs.getString(4));
-                pregunta.setClave3(rs.getString(5));
-                pregunta.setClave4(rs.getString(6));
-                pregunta.setClave5(rs.getString(7));
-                pregunta.setEstado(rs.getInt(8));
-                subtema.setIdSubtema(rs.getInt(9));
-                tp.setIdTipopregunta(rs.getInt(10));
-                dificultad.setIdDificultad(rs.getInt(11));
-                dificultad.setNivel(rs.getString(12));
-                pregunta.setIdDificultad(dificultad);
-                pregunta.setIdSubtema(subtema);
-                pregunta.setIdTipopregunta(tp);
-                pregunta.setCorrectaNum(rs.getInt(13));
-                pregunta.setInformacion(rs.getString(14));
-                preguntas.add(pregunta);
+                fachada = new FachadaPregunta(rs);
+                preguntas.add(fachada.getPregunta());
             }
             rs.close();
             return preguntas;
@@ -153,28 +135,8 @@ public class PreguntaDAO implements IPreguntaDAO {
             st.setInt(1, id_subtema);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                PreguntaTO pregunta = new PreguntaTO();
-                SubtemaTO subtema = new SubtemaTO();
-                TipoPreguntaTO tp = new TipoPreguntaTO();
-                DificultadTO dificultad = new DificultadTO();
-                pregunta.setIdPregunta(rs.getInt(1));
-                pregunta.setEnunciado(rs.getString(2));
-                pregunta.setClave1(rs.getString(3));
-                pregunta.setClave2(rs.getString(4));
-                pregunta.setClave3(rs.getString(5));
-                pregunta.setClave4(rs.getString(6));
-                pregunta.setClave5(rs.getString(7));
-                pregunta.setEstado(rs.getInt(8));
-                subtema.setIdSubtema(id_subtema);
-                tp.setIdTipopregunta(rs.getInt(9));
-                dificultad.setIdDificultad(rs.getInt(10));
-                dificultad.setNivel(rs.getString(11));
-                pregunta.setIdDificultad(dificultad);
-                pregunta.setIdSubtema(subtema);
-                pregunta.setIdTipopregunta(tp);
-                pregunta.setCorrectaNum(rs.getInt(12));
-                pregunta.setInformacion(rs.getString(13));
-                preguntas.add(pregunta);
+                fachada = new FachadaPregunta(rs);
+                preguntas.add(fachada.getPreguntaBySubtema(id_subtema));
             }
             rs.close();
             return preguntas;

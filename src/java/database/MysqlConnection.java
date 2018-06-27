@@ -20,7 +20,7 @@ public class MysqlConnection {
     String host = "sql141.main-hosting.eu";
     String user = "u736411459_alexk";
     String password = "ruEvGTzVY1F7";*/
-    String name_db = "u736411459_bd";
+    String name_db = "pd_2018i";
     String host = "localhost";
     String user = "root";
     String password = "";
