@@ -12,7 +12,7 @@
     int i = (Integer)request.getAttribute("contador");
 %>
 <div class="">
-    <div id="enunciado"><label class="w3-bar-item w3-button"><%=i+") "+ lista.getEnunciado()%></label><span id='<%= lista.getIdPregunta()%>'></span></div><br>
+    <div id="enunciado"><label id='preguntita'  class="w3-bar-item w3-button"><%=i+") "+ lista.getEnunciado()%></label><span id='<%= lista.getIdPregunta()%>'></span></div><br>
     <input id='myRadio1' type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 1)' value="<%= lista.getClave1()%>"><%=lista.getClave1()%> <br>
     <input id='myRadio2' type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 2)' value="<%= lista.getClave2()%>"><%=lista.getClave2()%><br>
     <input id='myRadio3' type="radio" name="<%= lista.getIdPregunta()%>" onclick='radioEnviar("<%= lista.getIdPregunta()%>", 3)' value="<%= lista.getClave3()%>"><%=lista.getClave3()%><br>

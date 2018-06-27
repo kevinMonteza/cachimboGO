@@ -10,7 +10,6 @@ import Adapter.DBAction;
 import dao.DAOFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +19,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import observer.componente.EstadisticaAsignatura;
+import observer.componente.EstadisticaTema;
+import observer.componente.estadisticaSubTema;
+import observer.design.ObservadoEstadistica;
+import observer.design.ObservadorEstadistica;
 import strategy.StrategyFactory;
 import to.ArticuloTO;
 import to.AsignaturaTO;
@@ -29,6 +33,7 @@ import to.SubtemaTO;
 import to.TemaTO;
 import to.UsuarioArticuloTO;
 import to.UsuarioAsignaturaTO;
+import to.UsuarioSubtemaTO;
 import to.UsuarioTO;
 import to.UsuarioTemaTO;
 
@@ -44,10 +49,12 @@ public class Controller extends HttpServlet {
     Dispacher dispacher;
     DBAction adapter;
     UsuarioTO usuario;
+    ObservadoEstadistica subTemaObservado;
     List<AsignaturaTO> listaAsignaturas;
     List<PreguntaTO> listaPreguntaTO;
     int contador = 0;
     boolean fallo;
+    int idSubtema;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -225,7 +232,7 @@ public class Controller extends HttpServlet {
          * =>request;getParametrer("id")
          */
         int id = Integer.parseInt(request.getParameter("id"));
-
+        idSubtema = id;
         System.out.println("IdSubTema : " + id);
         adapter = new DAOAdapter();
         try {
@@ -243,6 +250,11 @@ public class Controller extends HttpServlet {
     private void isUser(HttpServletRequest request, HttpServletResponse response) {
         dispacher = new Dispacher();
         String view = dispacher.isUser(request);
+        subTemaObservado = new estadisticaSubTema();
+        ObservadorEstadistica temaObservador = new EstadisticaTema();
+        ObservadorEstadistica asignaturaObservador = new EstadisticaAsignatura();
+        subTemaObservado.addObservadores(temaObservador);
+        subTemaObservado.addObservadores(asignaturaObservador);
         usuario = new UsuarioTO();
         usuario.setUsuario(request.getParameter("uname"));
         usuario.setPassword(request.getParameter("upass"));
@@ -425,7 +437,14 @@ public class Controller extends HttpServlet {
             PrintWriter out = response.getWriter();
             for (PreguntaTO preguntaTO : listaPreguntaTO) {
                 if (preguntaTO.getIdPregunta().toString().equals(idPregunta) && preguntaTO.getCorrectaNum().toString().equals(clave)) {
+                    if(listaPreguntaTO.size()==1){
+                       acertoRespuesta(1, idPregunta);
+                       listaPreguntaTO.remove(0);
+                        i = 1;
+                       break;
+                    }
                     listaPreguntaTO.remove(0);
+                    System.out.println("En el if ");
                     out.print("Correcta");
                     System.out.println("Correcta");
                     acertoRespuesta(1, idPregunta);
@@ -436,7 +455,8 @@ public class Controller extends HttpServlet {
             if (i == 0) {
                 fallo = false;
                 acertoRespuesta(0, idPregunta);
-                out.print("La Cagaste");
+                out.print("Incorrecta");
+                System.out.println("en el if i=0");
                 System.out.println("La Cagaste");
                 listaPreguntaTO.add(listaPreguntaTO.get(0));
                 listaPreguntaTO.remove(0);
@@ -451,7 +471,17 @@ public class Controller extends HttpServlet {
             PrintWriter out = response.getWriter();
             if (listaPreguntaTO.isEmpty()) {
                 if(fallo){
+                    System.out.println("entro al fallo");
+                    UsuarioSubtemaTO Usubtema= new UsuarioSubtemaTO();
                     
+                    SubtemaTO subtema= new SubtemaTO();
+                    subtema.setIdSubtema(idSubtema);
+                    
+                    Usubtema.setIdSubtema(subtema);
+                    Usubtema.setIdUsuario(usuario);
+                    Usubtema.setCompletado(fallo);
+                    
+                    subTemaObservado.updateEstadistica(Usubtema);
                 }
                 out.print("fin");
                 return;

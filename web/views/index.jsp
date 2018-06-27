@@ -210,7 +210,9 @@ and open the template in the editor.
                     document.getElementById("myRadio5").disabled = true;
                 }
             }
+            var obj = {};
             function radioEnviar(idPregunta, clave) {
+                let val = document.getElementById("preguntita").innerHTML;
                 desabilitar();
                 //console.log(idPregunta, " - ", clave);
                 var bt = $("#" + idPregunta);
@@ -224,11 +226,13 @@ and open the template in the editor.
                     bt.append(response);
                     $("#enunciado").removeClass();
                     if (response === "Correcta") {
+                        obj[val]="correcta";
                         //alert("entro");
                         $("#enunciado").addClass("verde");
                         //$("#btonSgt").slideDown();
                     }
-                    if (response === "La Cagaste") {
+                    if (response === "Incorrecta") {
+                        obj[val]="incorrecta";
                         $("#enunciado").addClass("rojo");
                         //$("#btonSgt").slideUp();
                     }
@@ -236,6 +240,7 @@ and open the template in the editor.
                 });
 
             }
+
             function siguiente(i) {
 
                 var bt = $("#modalBody");
@@ -243,7 +248,8 @@ and open the template in the editor.
                     instruccion: "next"
                 }, function (response) {
                     if (response === "fin") {
-                        cerrarModal();
+                        mostrarResumen();
+                       // cerrarModal();
                         return false;
                     } else {
                         //console.log(response); // aca recibe los temas de cada curso
@@ -252,6 +258,11 @@ and open the template in the editor.
                         bt.show("slow");
                     }
                 });
+            }
+            function mostrarResumen(){
+                 $("#modalBody").empty();
+                    console.log(obj);
+                
             }
             function cerrarModal() {
                 $("#myModal").modal('hide');
