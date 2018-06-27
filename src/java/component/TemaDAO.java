@@ -136,8 +136,8 @@ public class TemaDAO implements ITemaDAO {
     public int getTemasCompletados(UsuarioAsignaturaTO usuarioA) {
 
         try {
-            String sql = "select count(*) from usuario_tema inner join usuario u on usuario_tema.id_usuario = u.id_usuario"
-                    + "inner join usuario_asignatura a on u.id_usuario = a.id_usuario"
+            String sql = "select count(*) from usuario_tema inner join usuario u on usuario_tema.id_usuario = u.id_usuario "
+                    + " inner join usuario_asignatura a on u.id_usuario = a.id_usuario"
                     + " where u.id_usuario= ? and a.id_asignatura=? and usuario_tema.porcentaje=100;";
             st = connection.prepareStatement(sql);
             st.setInt(1, usuarioA.getIdUsuario().getIdUsuario());

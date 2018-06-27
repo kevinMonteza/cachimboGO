@@ -7,6 +7,7 @@ package observer.design;
 
 import Adapter.DAOAdapter;
 import Adapter.DBAction;
+import dao.DAOFactory;
 import java.util.ArrayList;
 import java.util.List;
 import to.TemaTO;
@@ -25,7 +26,13 @@ public abstract class ObservadoEstadistica {
     
     public void updateEstadistica(UsuarioSubtemaTO subtema){
         adapter = new DAOAdapter();
-        adapter.insertarUsuarioSubtema(subtema);
+        if(DAOFactory.getInstance().getUsuarioSubtemaDAO().existeUsuarioSubtema(subtema)){
+            System.out.println("en el if de upadateestadistica");
+            adapter.actualizarUsuarioSubtema(subtema);
+        }else{
+            System.out.println("en el else de upadate estadistica");
+            adapter.insertarUsuarioSubtema(subtema);
+        }
         tema = adapter.obtenerTemaBysubtemid(subtema.getIdSubtema().getIdSubtema());
         usuarioT = new UsuarioTemaTO();
         usuarioT.setIdTema(tema);

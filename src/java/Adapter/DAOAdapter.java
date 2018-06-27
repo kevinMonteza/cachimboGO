@@ -49,7 +49,7 @@ public class DAOAdapter implements DBAction{
     @Override
     public AsignaturaTO obtenerAsignaturaporTema(int id_tema){
          IAsignaturaDAO asignatura = DAOFactory.getInstance().getAsignaturaDAO();
-        return  asignatura.getAsignaturaById(id_tema);
+        return  asignatura.getIDAsignaturaBytema(id_tema);
     }
 
     @Override

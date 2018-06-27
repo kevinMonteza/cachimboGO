@@ -41,7 +41,7 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
                     + "  inner join tema t on s.id_tema = t.id_tema where s.id_tema=? and id_usuario=? and completado=1;";
             st = connection.prepareStatement(sql);
             st.setInt(1, usuarioT.getIdTema().getIdTema());
-            st.setInt(1,usuarioT.getIdUsuario().getIdUsuario());
+            st.setInt(2,usuarioT.getIdUsuario().getIdUsuario());
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 return rs.getInt(1);
@@ -101,6 +101,7 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
 
     @Override
     public boolean insertUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema) {
+        System.out.println("insert subtemaUsuario");
         String sql = "insert into usuario_subtema"
                 + "(id_usuario, "
                 + "id_subtema, "
@@ -143,15 +144,13 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
 
     @Override
     public boolean updateUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema) {
-        String sql = "update usuario_subtema "
-                + "set completado = ?"
-                + "where id_subtema = ? and id_usuario = ?;";
+        System.out.println("en updateUsuarioSubtema");
+        String sql = "update usuario_subtema set completado = 1 where id_usuario = ? and id_subtema = ?;";
         try {
             connection.setAutoCommit(false);
             st = connection.prepareStatement(sql);
-            st.setBoolean(1, usuarioSubtema.getCompletado());
-            st.setInt(2, usuarioSubtema.getIdSubtema().getIdSubtema());
-            st.setInt(3, usuarioSubtema.getIdUsuario().getIdUsuario());
+            st.setInt(1, usuarioSubtema.getIdSubtema().getIdSubtema());
+            st.setInt(2, usuarioSubtema.getIdUsuario().getIdUsuario());
             st.executeUpdate();
             connection.commit();
             return true;
@@ -171,6 +170,32 @@ public class UsuarioSubtemaDAO implements IUsuarioSubtemaDAO {
             } catch (SQLException ex) {
                 Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
+    @Override
+    public boolean existeUsuarioSubtema(UsuarioSubtemaTO usuarioS) {
+        try {
+            String sql = "select count(*) from usuario_subtema where id_subtema = ? and id_usuario=?;";
+            st = connection.prepareStatement(sql);
+            st.setInt(1, usuarioS.getIdSubtema().getIdSubtema());
+            st.setInt(2, usuarioS.getIdUsuario().getIdUsuario());
+            ResultSet rs = st.executeQuery();
+            if(rs.next())
+               return rs.getInt(1)!=0;
+            else
+                return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioTemaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
             if (st != null) {
                 try {
                     st.close();

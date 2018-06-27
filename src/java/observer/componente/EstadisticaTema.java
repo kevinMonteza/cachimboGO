@@ -22,6 +22,7 @@ public class EstadisticaTema implements ObservadorEstadistica {
     
     @Override
     public void update(UsuarioTemaTO usuTema) {
+        System.out.println("update tema");
         List<SubtemaTO> lista = adapter.obtenerSubtemasPorTema(usuTema.getIdTema().getIdTema());
         
         int cant = adapter.obtenerSubtemasporTema(usuTema);

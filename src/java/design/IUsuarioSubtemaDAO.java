@@ -19,4 +19,5 @@ public interface IUsuarioSubtemaDAO {
     public boolean insertUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema);
     public boolean updateUsuarioSubtema(UsuarioSubtemaTO usuarioSubtema);
     public int countSubtemasbyTemas(UsuarioTemaTO usuarioT);
+    public boolean existeUsuarioSubtema(UsuarioSubtemaTO usuarioS);
 }

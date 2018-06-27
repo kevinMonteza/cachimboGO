@@ -34,7 +34,7 @@ public class AsignaturaDAO implements IAsignaturaDAO {
     public AsignaturaTO getAsignaturaById(Integer id_asignatura) {
         AsignaturaTO asignatura = new AsignaturaTO();
         try {
-            String sql = "select nombre, id_tipo_pregunta from asignatura where id_asignatura = ?;";
+            String sql = "select nombre, id_tipo_asignatura from asignatura where id_asignatura = ?;";
             st = connection.prepareStatement(sql);
             st.setInt(1, id_asignatura);
             ResultSet rs = st.executeQuery();
